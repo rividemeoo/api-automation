@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    environment {
-        PYENV_HOME = "${tool 'Python 3.9'}/"
-        PATH = "${PYENV_HOME}bin:${PATH}"
-    }
     stages {
         stage('Checkout') {
             steps {
@@ -13,21 +9,9 @@ pipeline {
             }
         }
 
-        stage('Setup Virtual Environment') {
-            steps {
-                bat 'python -m venv venv'
-            }
-        }
-
-        stage('Activate Virtual Environment') {
-            steps {
-                bat 'source venv/bin/activate'
-            }
-        }
-
         stage('Build') {
             steps {
-                bat 'pip install -r requirements.txt'
+                bat 'python -m pip install -r requirements.txt'
             }
         }
         
