@@ -1,0 +1,7 @@
+azure-cosmos
+
+redis
+
+random-address
+
+Faker

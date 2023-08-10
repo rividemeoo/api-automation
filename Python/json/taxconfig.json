@@ -1,0 +1,1960 @@
+[
+  {
+    "id": "CT",
+    "businessArea": "CT",
+    "handler": "emptyTax",
+    "chargeTypes": [
+      "AudioCall",
+      "CoreSubscription",
+      "PerfectBundle",
+      "SBCActivatedUserSubscription",
+      "USDynamicE911",
+      "USCNAM",
+      "UnactivatedDDIs",
+      "PortCostPerDDI",
+      "PortCostPerRequest",
+      "PortCostOther",
+      "NewNumberRequest",
+      "Recording",
+      "PS_InitialSetup",
+      "PS_CTOnboarding",
+      "PS_OnPremSBCOnboarding",
+      "PS_Bespoke",
+      "PS_CT_POC",
+      "Hardware",
+      "SBCVendorWaranty",
+      "AdvancePayments",
+      "OneTimeCharges"
+    ],
+    "avalaraConfig": {
+      "server": {
+        "baseUrl": "https://communicationsua.avalara.net"
+      },
+      "includeUnmapedTaxes": false,
+      "chargeTypeMapping": [
+        {
+          "chargeType": "AudioCall",
+          "trans": 15,
+          "service": 7
+        },
+        {
+          "chargeType": "CoreSubscription",
+          "trans": 14,
+          "service": 682
+        },
+        {
+          "chargeType": "PerfectBundle",
+          "trans": 15,
+          "service": 7
+        },
+        {
+          "chargeType": "SBCActivatedUserSubscription",
+          "trans": 14,
+          "service": 682
+        },
+        {
+          "chargeType": "USDynamicE911",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "USCNAM",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "UnactivatedDDIs",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerDDI",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerRequest",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostOther",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "NewNumberRequest",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "Recording",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_InitialSetup",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_CTOnboarding",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_OnPremSBCOnboarding",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_Bespoke",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_CT_POC",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "Hardware",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "SBCVendorWaranty",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "AdvancePayments",
+          "trans": 14,
+          "service": 15
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "CT_ONLY",
+        "taxName": "CT_ONLY"
+      }
+    ]
+  },
+  {
+    "id": "CT:Freemium:USA",
+    "businessArea": "CT",
+    "handler": "emptyTax",
+    "location": "USA",
+    "exceptionFlag": "Freemium",
+    "avalaraConfig": {
+      "chargeTypeMapping": [
+        {
+          "chargeType": "AudioCall",
+          "trans": 3,
+          "service": 34
+        },
+        {
+          "chargeType": "CoreSubscription",
+          "trans": 24,
+          "service": 595
+        },
+        {
+          "chargeType": "PerfectBundle",
+          "trans": 3,
+          "service": 34
+        },
+        {
+          "chargeType": "SBCActivatedUserSubscription",
+          "trans": 24,
+          "service": 595
+        },
+        {
+          "chargeType": "USDynamicE911",
+          "trans": 19,
+          "service": 557
+        },
+        {
+          "chargeType": "USCNAM",
+          "trans": 19,
+          "service": 557
+        },
+        {
+          "chargeType": "UnactivatedDDIs",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerDDI",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PortCostPerRequest",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PortCostOther",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "NewNumberRequest",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "Recording",
+          "trans": 19,
+          "service": 557
+        },
+        {
+          "chargeType": "PS_InitialSetup",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_CTOnboarding",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_OnPremSBCOnboarding",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_Bespoke",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_CT_POC",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "Hardware",
+          "trans": 32,
+          "service": 106
+        },
+        {
+          "chargeType": "SBCVendorWaranty",
+          "trans": 10,
+          "service": 693
+        },
+        {
+          "chargeType": "AdvancePayments",
+          "trans": 10,
+          "service": 15
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "USA_SF1_ExceptionFreemium",
+        "taxName": "CASF"
+      },
+      {
+        "taxCode": "USA_SF2_ExceptionFreemium",
+        "taxName": "CASF"
+      },
+      {
+        "taxCode": "USA_SF3_ExceptionFreemium",
+        "taxName": "CASF"
+      },
+      {
+        "taxCode": "CT_ONLY",
+        "taxName": "ONLYFREEMIUMUSA"
+      }
+    ]
+  },
+  {
+    "id": "RemoteMeeting:License",
+    "businessArea": "RemoteMeeting",
+    "handler": "percentage",
+    "exceptionFlag": "License",
+    "chargeTypes": [
+      "CustomizationFee",
+      "LicenseLiveMeeting",
+      "LicenseLoopUp",
+      "LicenseScreenShareOnly",
+      "LicenseWebEx"
+    ],
+    "taxCodes": [
+      {
+        "taxCode": "RM_ONLY_ExceptionLicense",
+        "taxName": "RM_ONLY_ExceptionLicense"
+      }
+    ]
+  },
+  {
+    "id": "RemoteMeeting:License:IDN",
+    "businessArea": "RemoteMeeting",
+    "handler": "percentage",
+    "location": "IDN",
+    "exceptionFlag": "License",
+    "percentageConfig": {
+      "taxes": [
+        {
+          "code": "IDN_VAT",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.15,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        },
+        {
+          "code": "IDN_ET",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.3,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        }
+      ],
+      "taxByChargeTypes": [
+        {
+          "chargeType": "AudioLeg",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "Recording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_WebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_LiveMeeting",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "VideoLeg",
+          "taxes": []
+        },
+        {
+          "chargeType": "MinimumUsage",
+          "taxes": [
+            "IDN_ET"
+          ]
+        },
+        {
+          "chargeType": "OneTimeCharges",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesCancelationFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesNoShowFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesOverageFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesParticipantList",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesRecording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesTranscription",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesTranslation",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "CustomizationFee",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLiveMeeting",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLoopUp",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "LicenseScreenShareOnly",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseWebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsPerMinuteRatedCdrs",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsWebSharing",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OtherMiscCharges",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesStorage",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesUsageParticipantCount",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "RevenueShareFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "IDN_CASF_ExceptionLisense",
+        "taxName": "CASF"
+      }
+    ]
+  },
+  {
+    "id": "CT:Freemium:USA:CA",
+    "businessArea": "CT",
+    "handler": "avalara",
+    "location": "USA/CA",
+    "exceptionFlag": "Freemium",
+    "avalaraConfig": {
+      "outputMapping": [
+        {
+          "avalaraTaxId": 468,
+          "loopupTaxCode": "USA_CA_PUC_FEE",
+          "taxName": "CA PUC Fee"
+        },
+        {
+          "avalaraTaxId": 466,
+          "loopupTaxCode": "USA_CA_TRS",
+          "taxName": "CA TRS"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_CASF",
+          "taxName": "CASF"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_HIGH_COST_FUND_A",
+          "taxName": "CA High Cost Fund A"
+        },
+        {
+          "avalaraTaxId": 22,
+          "loopupTaxCode": "USA_CA_UNIV_LIFELINE_PHONE_SVC_CHG",
+          "taxName": "Universal Lifeline Telephone Service Charge"
+        },
+        {
+          "avalaraTaxId": 21,
+          "loopupTaxCode": "USA_CA_TELECONNECT_FUND",
+          "taxName": "CA Teleconnect Funde"
+        },
+        {
+          "avalaraTaxId": 16,
+          "loopupTaxCode": "USA_CA_UTILITY_USER_TAX",
+          "taxName": "CA Utility Users Tax"
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "USA_CA_VAT_Freemium_Exception",
+        "taxName": "VATException_USA_CA_FREEMIUM"
+      },
+      {
+        "taxCode": "USA_SF2_ExceptionFreemium",
+        "taxName": "CASF"
+      }
+    ]
+  },
+  {
+    "id": "RemoteMeeting::IDN",
+    "businessArea": "RemoteMeeting",
+    "handler": "percentage",
+    "location": "IDN",
+    "percentageConfig": {
+      "taxes": [
+        {
+          "code": "IDN_VAT",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.15,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        },
+        {
+          "code": "IDN_ET",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.3,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        }
+      ],
+      "taxByChargeTypes": [
+        {
+          "chargeType": "AudioLeg",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "Recording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_WebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_LiveMeeting",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "VideoLeg",
+          "taxes": []
+        },
+        {
+          "chargeType": "MinimumUsage",
+          "taxes": [
+            "IDN_ET"
+          ]
+        },
+        {
+          "chargeType": "OneTimeCharges",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesCancelationFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesNoShowFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesOverageFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesParticipantList",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesRecording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesTranscription",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesTranslation",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "CustomizationFee",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLiveMeeting",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLoopUp",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "LicenseScreenShareOnly",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseWebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsPerMinuteRatedCdrs",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsWebSharing",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OtherMiscCharges",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesStorage",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesUsageParticipantCount",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "RevenueShareFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "IDN_RM",
+        "taxName": "TAX_IDNRM"
+      }
+    ]
+  },
+  {
+    "id": "CT::GBR",
+    "businessArea": "CT",
+    "handler": "percentage",
+    "location": "GBR",
+    "percentageConfig": {
+      "taxes": [
+        {
+          "code": "GBR_VAT",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.2,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "GBR"
+          }
+        }
+      ],
+      "taxByChargeTypes": [
+        {
+          "chargeType": "AudioCall",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "CoreSubscription",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PerfectBundle",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "SBCActivatedUserSubscription",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "USDynamicE911",
+          "taxes": []
+        },
+        {
+          "chargeType": "USCNAM",
+          "taxes": []
+        },
+        {
+          "chargeType": "UnactivatedDDIs",
+          "taxes": []
+        },
+        {
+          "chargeType": "PortCostPerDDI",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PortCostPerRequest",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PortCostOther",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "NewNumberRequest",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "Recording",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PS_InitialSetup",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PS_CTOnboarding",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PS_OnPremSBCOnboarding",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PS_Bespoke",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "PS_CT_POC",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "Hardware",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "SBCVendorWaranty",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        },
+        {
+          "chargeType": "AdvancePayments",
+          "taxes": [
+            "GBR_VAT"
+          ]
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "CT_GBR_VAT",
+        "taxName": "CT_VAT"
+      }
+    ]
+  },
+  {
+    "id": "RemoteMeeting::USA:CA",
+    "businessArea": "RemoteMeeting",
+    "handler": "percentage",
+    "location": "USA/CA",
+    "percentageConfig": {
+      "taxes": [
+        {
+          "code": "IDN_VAT",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.15,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        },
+        {
+          "code": "IDN_ET",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.3,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        }
+      ],
+      "taxByChargeTypes": [
+        {
+          "chargeType": "AudioLeg",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "Recording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_WebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_LiveMeeting",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "VideoLeg",
+          "taxes": []
+        },
+        {
+          "chargeType": "MinimumUsage",
+          "taxes": [
+            "IDN_ET"
+          ]
+        },
+        {
+          "chargeType": "OneTimeCharges",
+          "taxes": [
+            "IDN_VAT"
+			]
+        },
+        {
+          "chargeType": "AncillaryChargesCancelationFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesNoShowFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesOverageFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesParticipantList",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesRecording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesTranscription",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesTranslation",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "CustomizationFee",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLiveMeeting",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLoopUp",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "LicenseScreenShareOnly",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseWebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsPerMinuteRatedCdrs",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsWebSharing",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OtherMiscCharges",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesStorage",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesUsageParticipantCount",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "RevenueShareFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "CA_RM",
+        "taxName": "CASF"
+      }
+    ]
+  },
+  {
+    "id": "CT:License:USA",
+    "businessArea": "CT",
+    "handler": "emptyTax",
+    "location": "USA",
+    "exceptionFlag": "License",
+    "avalaraConfig": {
+      "chargeTypeMapping": [
+        {
+          "chargeType": "AudioCall",
+          "trans": 3,
+          "service": 34
+        },
+        {
+          "chargeType": "CoreSubscription",
+          "trans": 24,
+          "service": 595
+        },
+        {
+          "chargeType": "PerfectBundle",
+          "trans": 3,
+          "service": 34
+        },
+        {
+          "chargeType": "SBCActivatedUserSubscription",
+          "trans": 24,
+          "service": 595
+        },
+        {
+          "chargeType": "USDynamicE911",
+          "trans": 19,
+          "service": 557
+        },
+        {
+          "chargeType": "USCNAM",
+          "trans": 19,
+          "service": 557
+        },
+        {
+          "chargeType": "UnactivatedDDIs",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerDDI",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PortCostPerRequest",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PortCostOther",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "NewNumberRequest",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "Recording",
+          "trans": 19,
+          "service": 557
+        },
+        {
+          "chargeType": "PS_InitialSetup",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_CTOnboarding",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_OnPremSBCOnboarding",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_Bespoke",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "PS_CT_POC",
+          "trans": 3,
+          "service": 602
+        },
+        {
+          "chargeType": "Hardware",
+          "trans": 32,
+          "service": 106
+        },
+        {
+          "chargeType": "SBCVendorWaranty",
+          "trans": 10,
+          "service": 693
+        },
+        {
+          "chargeType": "AdvancePayments",
+          "trans": 10,
+          "service": 15
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "USA_CA_CASF1_LicenseException",
+        "taxName": "CASF"
+      },
+      {
+        "taxCode": "USA_CA_CASF2_LicenseException",
+        "taxName": "CASF"
+      },
+      {
+        "taxCode": "USA_CA_CASF3_LicenseException",
+        "taxName": "CASF"
+      }
+    ]
+  },
+  {
+    "id": "CT:License",
+    "businessArea": "CT",
+    "handler": "emptyTax",
+    "exceptionFlag": "License",
+    "chargeTypes": [
+      "AudioCall",
+      "CoreSubscription",
+      "PerfectBundle",
+      "SBCActivatedUserSubscription",
+      "USDynamicE911",
+      "USCNAM",
+      "UnactivatedDDIs",
+      "PortCostPerDDI",
+      "PortCostPerRequest",
+      "PortCostOther",
+      "NewNumberRequest",
+      "Recording",
+      "PS_InitialSetup",
+      "PS_CTOnboarding",
+      "PS_OnPremSBCOnboarding",
+      "PS_Bespoke",
+      "PS_CT_POC",
+      "Hardware",
+      "SBCVendorWaranty",
+      "AdvancePayments",
+      "OneTimeCharges"
+    ],
+    "avalaraConfig": {
+      "server": {
+        "baseUrl": "https://communicationsua.avalara.net"
+      },
+      "includeUnmapedTaxes": false,
+      "chargeTypeMapping": [
+        {
+          "chargeType": "AudioCall",
+          "trans": 15,
+          "service": 7
+        },
+        {
+          "chargeType": "CoreSubscription",
+          "trans": 14,
+          "service": 682
+        },
+        {
+          "chargeType": "PerfectBundle",
+          "trans": 15,
+          "service": 7
+        },
+        {
+          "chargeType": "SBCActivatedUserSubscription",
+          "trans": 14,
+          "service": 682
+        },
+        {
+          "chargeType": "USDynamicE911",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "USCNAM",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "UnactivatedDDIs",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerDDI",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerRequest",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostOther",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "NewNumberRequest",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "Recording",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_InitialSetup",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_CTOnboarding",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_OnPremSBCOnboarding",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_Bespoke",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_CT_POC",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "Hardware",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "SBCVendorWaranty",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "AdvancePayments",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "OneTimeCharges",
+          "trans": 14,
+          "service": 15
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "CT_ONLY_LicenseException",
+        "taxName": "ONLY"
+      }
+    ]
+  },
+  {
+    "id": "CT:License:USA:CA",
+    "businessArea": "CT",
+    "handler": "avalara",
+    "location": "USA/CA",
+    "exceptionFlag": "License",
+    "avalaraConfig": {
+      "outputMapping": [
+        {
+          "avalaraTaxId": 468,
+          "loopupTaxCode": "USA_CA_PUC_FEE",
+          "taxName": "CA PUC Fee"
+        },
+        {
+          "avalaraTaxId": 466,
+          "loopupTaxCode": "USA_CA_TRS",
+          "taxName": "CA TRS"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_CASF",
+          "taxName": "CASF"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_HIGH_COST_FUND_A",
+          "taxName": "CA High Cost Fund A"
+        },
+        {
+          "avalaraTaxId": 22,
+          "loopupTaxCode": "USA_CA_UNIV_LIFELINE_PHONE_SVC_CHG",
+          "taxName": "Universal Lifeline Telephone Service Charge"
+        },
+        {
+          "avalaraTaxId": 21,
+          "loopupTaxCode": "USA_CA_TELECONNECT_FUND",
+          "taxName": "CA Teleconnect Funde"
+        },
+        {
+          "avalaraTaxId": 16,
+          "loopupTaxCode": "USA_CA_UTILITY_USER_TAX",
+          "taxName": "CA Utility Users Tax"
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "CA1_LiscenseException",
+        "taxName": "USA_CA1"
+      }
+    ]
+  },
+  {
+    "id": "CT::USA",
+    "businessArea": "CT",
+    "handler": "Avalara",
+    "location": "USA",
+    "avalaraConfig": {
+        "chargeTypeMapping": [
+            {
+                "chargeType": "AudioCall",
+                "trans": 3,
+                "service": 34
+            },
+            {
+                "chargeType": "CoreSubscription",
+                "trans": 24,
+                "service": 595
+            },
+            {
+                "chargeType": "PerfectBundle",
+                "trans": 3,
+                "service": 34
+            },
+            {
+                "chargeType": "SBCActivatedUserSubscription",
+                "trans": 24,
+                "service": 595
+            },
+            {
+                "chargeType": "USDynamicE911",
+                "trans": 19,
+                "service": 557
+            },
+            {
+                "chargeType": "USCNAM",
+                "trans": 19,
+                "service": 557
+            },
+            {
+                "chargeType": "UnactivatedDDIs",
+                "trans": 14,
+                "service": 15
+            },
+            {
+                "chargeType": "PortCostPerDDI",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "PortCostPerRequest",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "PortCostOther",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "NewNumberRequest",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "Recording",
+                "trans": 19,
+                "service": 557
+            },
+            {
+                "chargeType": "PS_InitialSetup",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "PS_CTOnboarding",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "PS_OnPremSBCOnboarding",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "PS_Bespoke",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "PS_CT_POC",
+                "trans": 3,
+                "service": 602
+            },
+            {
+                "chargeType": "Hardware",
+                "trans": 32,
+                "service": 106
+            },
+            {
+                "chargeType": "SBCVendorWaranty",
+                "trans": 10,
+                "service": 693
+            },
+            {
+                "chargeType": "AdvancePayments",
+                "trans": 10,
+                "service": 15
+            }
+        ]
+    },
+    "_rid": "HN45AJGwMKcWAAAAAAAAAA==",
+    "_self": "dbs/HN45AA==/colls/HN45AJGwMKc=/docs/HN45AJGwMKcWAAAAAAAAAA==/",
+    "_etag": "\"00000000-0000-0000-6fd7-8310362201d8\"",
+    "_attachments": "attachments/",
+    "_ts": 1653442441
+},
+  {
+    "id": "Event",
+    "businessArea": "Event",
+    "handler": "emptyTax",
+    "avalaraConfig": {
+      "server": {
+        "baseUrl": "https://communicationsua.avalara.net"
+      },
+      "includeUnmapedTaxes": false,
+      "chargeTypeMapping": [
+        {
+          "chargeType": "AudioCall",
+          "trans": 15,
+          "service": 7
+        },
+        {
+          "chargeType": "CoreSubscription",
+          "trans": 14,
+          "service": 682
+        },
+        {
+          "chargeType": "PerfectBundle",
+          "trans": 15,
+          "service": 7
+        },
+        {
+          "chargeType": "SBCActivatedUserSubscription",
+          "trans": 14,
+          "service": 682
+        },
+        {
+          "chargeType": "USDynamicE911",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "USCNAM",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "UnactivatedDDIs",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerDDI",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostPerRequest",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PortCostOther",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "NewNumberRequest",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "Recording",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_InitialSetup",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_CTOnboarding",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_OnPremSBCOnboarding",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_Bespoke",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "PS_CT_POC",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "Hardware",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "SBCVendorWaranty",
+          "trans": 14,
+          "service": 15
+        },
+        {
+          "chargeType": "AdvancePayments",
+          "trans": 14,
+          "service": 15
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "EVENT_VAT",
+        "taxName": "VAT"
+      }
+    ]
+  },
+  {
+    "id": "RemoteMeeting",
+    "businessArea": "RemoteMeeting",
+    "handler": "emptyTax",
+    "chargeTypes": [
+      "AudioLeg",
+      "Recording",
+      "PAYG_ScreenShare",
+      "PAYG_WebEx",
+      "PAYG_LiveMeeting",
+      "VideoLeg",
+      "MinimumUsage",
+      "OneTimeCharges",
+      "AncillaryChargesCancelationFee",
+      "AncillaryChargesNoShowFee",
+      "AncillaryChargesOverageFee",
+      "AncillaryChargesParticipantList",
+      "AncillaryChargesRecording",
+      "AncillaryChargesTranscription",
+      "AncillaryChargesTranslation",
+      "CustomizationFee",
+      "LicenseLiveMeeting",
+      "LicenseLoopUp",
+      "LicenseScreenShareOnly",
+      "LicenseWebEx",
+      "OperatorAssistedCallsPerMinuteRatedCdrs",
+      "OperatorAssistedCallsWebSharing",
+      "OtherMiscCharges",
+      "OverageFeesStorage",
+      "OverageFeesUsageParticipantCount",
+      "RevenueShareFee"
+    ],
+    "taxCodes": [
+      {
+        "taxCode": "RM_ONLY",
+        "taxName": "ONLY"
+      }
+    ]
+  },
+  {
+    "id": "CT::USA:CA",
+    "businessArea": "CT",
+    "handler": "Avalara",
+    "location": "USA/CA",
+    "avalaraConfig": {
+      "outputMapping": [
+        {
+          "avalaraTaxId": 468,
+          "loopupTaxCode": "USA_CA_PUC_FEE",
+          "taxName": "CA PUC Fee"
+        },
+        {
+          "avalaraTaxId": 466,
+          "loopupTaxCode": "USA_CA_TRS",
+          "taxName": "CA TRS"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_CASF",
+          "taxName": "CASF"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_HIGH_COST_FUND_A",
+          "taxName": "CA High Cost Fund A"
+        },
+        {
+          "avalaraTaxId": 22,
+          "loopupTaxCode": "USA_CA_UNIV_LIFELINE_PHONE_SVC_CHG",
+          "taxName": "Universal Lifeline Telephone Service Charge"
+        },
+        {
+          "avalaraTaxId": 21,
+          "loopupTaxCode": "USA_CA_TELECONNECT_FUND",
+          "taxName": "CA Teleconnect Funde"
+        },
+        {
+          "avalaraTaxId": 16,
+          "loopupTaxCode": "USA_CA_UTILITY_USER_TAX",
+          "taxName": "CA Utility Users Tax"
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "CT_USA_CA",
+        "taxName": "CT_USA_CASF"
+      },
+      {
+        "taxCode": "CT_USASAME",
+        "taxName": "CT_USASAME"
+      }
+    ]
+  },
+  {
+    "id": "RemoteMeeting::Freemium",
+    "businessArea": "RemoteMeeting",
+    "handler": "percentage",
+    "exceptionFlag": "Freemium",
+    "chargeTypes": [
+      "CustomizationFee",
+      "LicenseLiveMeeting",
+      "LicenseLoopUp",
+      "LicenseScreenShareOnly",
+      "LicenseWebEx"
+    ]
+  },
+  {
+    "id": "RemoteMeeting:Freemium:IDN",
+    "businessArea": "RemoteMeeting",
+    "handler": "percentage",
+    "location": "IDN",
+    "exceptionFlag": "Freemium",
+    "percentageConfig": {
+      "taxes": [
+        {
+          "code": "IDN_VAT",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.15,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        },
+        {
+          "code": "IDN_ET",
+          "name": "Valua-Added Tax",
+          "billable": true,
+          "taxRate": 0.3,
+          "level": "Country",
+          "jurisdiction": {
+            "countryIso": "IDN"
+          }
+        }
+      ],
+      "taxByChargeTypes": [
+        {
+          "chargeType": "AudioLeg",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "Recording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_WebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "PAYG_LiveMeeting",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "VideoLeg",
+          "taxes": []
+        },
+        {
+          "chargeType": "MinimumUsage",
+          "taxes": [
+            "IDN_ET"
+          ]
+        },
+        {
+          "chargeType": "OneTimeCharges",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesCancelationFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesNoShowFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesOverageFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesParticipantList",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesRecording",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "AncillaryChargesTranscription",
+          "taxes": []
+        },
+        {
+          "chargeType": "AncillaryChargesTranslation",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "CustomizationFee",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLiveMeeting",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseLoopUp",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "LicenseScreenShareOnly",
+          "taxes": []
+        },
+        {
+          "chargeType": "LicenseWebEx",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsPerMinuteRatedCdrs",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OperatorAssistedCallsWebSharing",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OtherMiscCharges",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesStorage",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "OverageFeesUsageParticipantCount",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        },
+        {
+          "chargeType": "RevenueShareFee",
+          "taxes": [
+            "IDN_VAT"
+          ]
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "IDN_CASF_FreemiumException",
+        "taxName": "CASF"
+      }
+    ]
+  },
+  {
+    "id": "CT:Freemium:GBR",
+    "businessArea": "CT",
+    "handler": "avalara",
+    "location": "GBR",
+    "exceptionFlag": "Freemium",
+    "avalaraConfig": {
+      "outputMapping": [
+        {
+          "avalaraTaxId": 468,
+          "loopupTaxCode": "USA_CA_PUC_FEE",
+          "taxName": "CA PUC Fee"
+        },
+        {
+          "avalaraTaxId": 466,
+          "loopupTaxCode": "USA_CA_TRS",
+          "taxName": "CA TRS"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_CASF",
+          "taxName": "CASF"
+        },
+        {
+          "avalaraTaxId": 223,
+          "loopupTaxCode": "USA_CA_HIGH_COST_FUND_A",
+          "taxName": "CA High Cost Fund A"
+        },
+        {
+          "avalaraTaxId": 22,
+          "loopupTaxCode": "USA_CA_UNIV_LIFELINE_PHONE_SVC_CHG",
+          "taxName": "Universal Lifeline Telephone Service Charge"
+        },
+        {
+          "avalaraTaxId": 21,
+          "loopupTaxCode": "USA_CA_TELECONNECT_FUND",
+          "taxName": "CA Teleconnect Funde"
+        },
+        {
+          "avalaraTaxId": 16,
+          "loopupTaxCode": "USA_CA_UTILITY_USER_TAX",
+          "taxName": "CA Utility Users Tax"
+        }
+      ]
+    },
+    "taxCodes": [
+      {
+        "taxCode": "GBR_VAT_Freemium_Exception",
+        "taxName": "VATException_GBR_FREEMIUM"
+      }
+    ]
+  },
+  {
+    "id": "CT::USA:NY",
+    "businessArea": "CT",
+    "handler": "avalara",
+    "location": "USA/NY",
+    "avalaraConfig": {
+        "outputMapping": [
+            {
+                "avalaraTaxId": 27,
+                "loopupTaxCode": "USA_NY_MCTD_186C",
+                "taxName": "NY MCTD 186c"
+            },
+            {
+                "avalaraTaxId": 314,
+                "loopupTaxCode": "USA_NY_SALES_TAX",
+                "taxName": "NY Sales Tax"
+            },
+            {
+                "avalaraTaxId": 313,
+                "loopupTaxCode": "USA_NY_SALES_TAX",
+                "taxName": "NY Sales Tax"
+            },
+            {
+                "avalaraTaxId": 5,
+                "loopupTaxCode": "USA_NY_EXCISE_TAX",
+                "taxName": "Excise Tax"
+            },
+            {
+                "avalaraTaxId": 18,
+                "loopupTaxCode": "USA_USF",
+                "taxName": "Fed Universal Service Fund"
+            },
+            {
+                "avalaraTaxId": 169,
+                "loopupTaxCode": "USA_FCC",
+                "taxName": "FCC Regulatory Fee (Wireline)"
+            }
+        ]
+    },
+    "_rid": "HN45AJGwMKcUAAAAAAAAAA==",
+    "_self": "dbs/HN45AA==/colls/HN45AJGwMKc=/docs/HN45AJGwMKcUAAAAAAAAAA==/",
+    "_etag": "\"00000000-0000-0000-6f3e-5c73e3dc01d8\"",
+    "_attachments": "attachments/",
+    "_ts": 1653376663
+}]

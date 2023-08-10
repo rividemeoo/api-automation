@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++)
+        filterItems[i].hidden = false;
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>report.html</h1>
+    <p>Report generated on 24-Oct-2022 at 15:43:59 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files\Java\jdk-11.0.6</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "1.0.0", "py": "1.11.0", "pytest": "7.1.3"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.19041-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"html": "3.1.1", "metadata": "2.0.2"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.9.13</td></tr></table>
+    <h2>Summary</h2>
+    <p>37 tests ran in 139.08 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">34 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">3 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_validateAddressWithCTUSACountry</td>
+          <td class="col-duration">4.12</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_taxapiendpoint.TestTaxApiEndpoint testMethod=test_validateAddressWithCTUSACountry&gt;<br/><br/>    def test_validateAddressWithCTUSACountry(self):<br/>        try:<br/>            response = commonTestHelper.addressValidation(<br/>                &#x27;CT&#x27;, None, &#x27;939 Orange Ave Coronado&#x27;, &#x27;Coronado&#x27;, None, 921188, &#x27;USA&#x27;)<br/>            rspContent = json.loads(response.content)<br/>    <br/>            print (response.content)<br/>            print (&#x27;status_code:&#x27; + str(response.status_code))<br/>    <br/>            for i in range(len(self.itemList)):<br/>                if self.itemList[i][&#x27;id&#x27;] == &#x27;CT::USA&#x27; and &#x27;Avalara&#x27; == self.itemList[i][&#x27;handler&#x27;]:<br/>                    self.itemList = self.itemList[i]<br/>                    break<br/>    <br/>            self.assertEqual(response.status_code, 200)<br/>            self.assertEqual(rspContent[&#x27;data&#x27;][&#x27;status&#x27;], &#x27;Match&#x27;)<br/>&gt;           self.assertEqual(rspContent[&#x27;data&#x27;][&#x27;provider&#x27;], self.itemList[&#x27;handler&#x27;])<br/><span class="error">E           TypeError: list indices must be integers or slices, not str</span><br/><br/>tests\test_taxapiendpoint.py:807: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;status&quot;:&quot;Match&quot;,&quot;provider&quot;:&quot;Avalara&quot;}}&#x27;
+status_code:200
+
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_validateAddressWithCTUSACountryCAState</td>
+          <td class="col-duration">3.33</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_taxapiendpoint.TestTaxApiEndpoint testMethod=test_validateAddressWithCTUSACountryCAState&gt;<br/><br/>    def test_validateAddressWithCTUSACountryCAState(self):<br/>        try:<br/>            response = commonTestHelper.addressValidation(<br/>                &#x27;CT&#x27;, None, &#x27;939 Orange Ave Coronado&#x27;, &#x27;Coronado&#x27;, &#x27;CA&#x27;, 921188, &#x27;USA&#x27;)<br/>            rspContent = json.loads(response.content)<br/>    <br/>            print (response.content)<br/>            print (&#x27;status_code:&#x27; + str(response.status_code))<br/>    <br/>            for i in range(len(self.itemList)):<br/>                if self.itemList[i][&#x27;id&#x27;] == &#x27;CT::USA:CA&#x27; and &#x27;Avalara&#x27; == self.itemList[i][&#x27;handler&#x27;]:<br/>                    self.itemList = self.itemList[i]<br/>                    break<br/>    <br/>            self.assertEqual(response.status_code, 200)<br/>            self.assertEqual(rspContent[&#x27;data&#x27;][&#x27;status&#x27;], &#x27;Match&#x27;)<br/>&gt;           self.assertEqual(rspContent[&#x27;data&#x27;][&#x27;provider&#x27;], self.itemList[&#x27;handler&#x27;])<br/><span class="error">E           TypeError: list indices must be integers or slices, not str</span><br/><br/>tests\test_taxapiendpoint.py:830: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;status&quot;:&quot;Match&quot;,&quot;provider&quot;:&quot;Avalara&quot;}}&#x27;
+status_code:200
+
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_validateAddressWithCTUSACountryInvalidZip</td>
+          <td class="col-duration">3.50</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_taxapiendpoint.TestTaxApiEndpoint testMethod=test_validateAddressWithCTUSACountryInvalidZip&gt;<br/><br/>    def test_validateAddressWithCTUSACountryInvalidZip(self):<br/>        try:<br/>            response = commonTestHelper.addressValidation(<br/>                &#x27;CT&#x27;, None, None, None, None, &#x27;invalid&#x27;, &#x27;USA&#x27;)<br/>            rspContent = json.loads(response.content)<br/>    <br/>            print (response.content)<br/>            print (&#x27;status_code:&#x27; + str(response.status_code))<br/>    <br/>            for i in range(len(self.itemList)):<br/>                if self.itemList[i][&#x27;id&#x27;] == &#x27;CT::USA&#x27; and &#x27;Avalara&#x27; == self.itemList[i][&#x27;handler&#x27;]:<br/>                    self.itemList = self.itemList[i]<br/>                    break<br/>    <br/>            self.assertEqual(response.status_code, 200)<br/>            self.assertEqual(rspContent[&#x27;data&#x27;][&#x27;status&#x27;], &#x27;NotMatch&#x27;)<br/>&gt;           self.assertEqual(rspContent[&#x27;data&#x27;][&#x27;provider&#x27;], self.itemList[&#x27;handler&#x27;])<br/><span class="error">E           TypeError: list indices must be integers or slices, not str</span><br/><br/>tests\test_taxapiendpoint.py:852: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;status&quot;:&quot;NotMatch&quot;,&quot;provider&quot;:&quot;Avalara&quot;}}&#x27;
+status_code:200
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_healthCheck.py::TestHealthCheckEndpoint::test_HealthCheck200Response</td>
+          <td class="col-duration">1.10</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{\r\n  &quot;status&quot;: &quot;Healthy&quot;,\r\n  &quot;results&quot;: {},\r\n  &quot;time&quot;: &quot;2022-10-24T08:41:42.0434014Z&quot;\r\n}&#x27;
+status_code:200
+test_passed
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_rootEndpoint.py::TestRootEndpoint::test_rootEndpoint200Response</td>
+          <td class="col-duration">0.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;environment&quot;:&quot;Engineering&quot;,&quot;version&quot;:&quot;1.0.0.0&quot;}&#x27;
+status_code:200
+test_passed
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxCTBusinessArea</td>
+          <td class="col-duration">6.18</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;invoiceString&quot;:&quot;CT-123123&quot;,&quot;invoiceItemTaxes&quot;:[{&quot;ref&quot;:&quot;APPLY_TO_AUDIO_LEGS_Avalara&quot;,&quot;taxes&quot;:[{&quot;code&quot;:&quot;GBR_VAT&quot;,&quot;name&quot;:&quot;Value-Added Tax&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.2,&quot;taxAmount&quot;:896.7321,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;Country&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;GBR&quot;,&quot;region&quot;:null,&quot;county&quot;:null,&quot;locality&quot;:null}}]}]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxCTBusinessAreaInvalidAndNullValue400Response</td>
+          <td class="col-duration">4.43</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;validation failed&quot;,&quot;rules&quot;:[&quot;Please provide a valid invoice date&quot;,&quot;Please provide a valid country iso&quot;,&quot;Please provide a valid charge type&quot;,&quot;Please provide a valid amount&quot;]}&#x27;
+status_code:400
+b&#x27;{&quot;error&quot;:&quot;validation failed&quot;,&quot;rules&quot;:[&quot;Please provide a valid business area&quot;,&quot;Please provide a valid invoice date&quot;,&quot;Please provide a valid country iso&quot;,&quot;Please provide a valid charge type&quot;,&quot;Please provide a valid amount&quot;]}&#x27;
+status_code:400
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxCTBusinessAreaWithInvalidChargeType</td>
+          <td class="col-duration">3.63</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;validation failed&quot;,&quot;rules&quot;:[&quot;Please provide a valid charge type&quot;]}&#x27;
+status_code:400
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxCTBusinessAreaWithLowerCase</td>
+          <td class="col-duration">3.56</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Business area does not exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxNonExistingBusinessArea404Response</td>
+          <td class="col-duration">3.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Business area does not exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxRemoteMeetingBusinessArea</td>
+          <td class="col-duration">3.23</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;invoiceString&quot;:&quot;CT-123123&quot;,&quot;invoiceItemTaxes&quot;:[{&quot;ref&quot;:&quot;APPLY_TO_AUDIO_LEGS_Avalara&quot;,&quot;taxes&quot;:[{&quot;code&quot;:&quot;IDN_VAT&quot;,&quot;name&quot;:&quot;Valua-Added Tax&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.15,&quot;taxAmount&quot;:672.5491,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;Country&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;IDN&quot;,&quot;region&quot;:null,&quot;county&quot;:null,&quot;locality&quot;:null}}]}]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxWithAvalaraCTUSA</td>
+          <td class="col-duration">7.16</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;invoiceString&quot;:&quot;CT-123123&quot;,&quot;invoiceItemTaxes&quot;:[{&quot;ref&quot;:&quot;APPLY_TO_AUDIO_LEGS_Avalara&quot;,&quot;taxes&quot;:[{&quot;code&quot;:&quot;USA_CA_PUC_FEE&quot;,&quot;name&quot;:&quot;CA PUC Fee&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.0052,&quot;taxAmount&quot;:23.3151,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CA_TRS&quot;,&quot;name&quot;:&quot;CA TRS&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.0111,&quot;taxAmount&quot;:49.7687,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CASF&quot;,&quot;name&quot;:&quot;CASF&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.01019,&quot;taxAmount&quot;:45.6885,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CA_HIGH_COST_FUND_A&quot;,&quot;name&quot;:&quot;CA High Cost Fund A&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.007,&quot;taxAmount&quot;:31.3857,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CA_TELECONNECT_FUND&quot;,&quot;name&quot;:&quot;CA Teleconnect Fund&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.0078,&quot;taxAmount&quot;:34.9726,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_UTILITY_USERS_TAX&quot;,&quot;name&quot;:&quot;Utility Users Tax&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:6031.91317272,&quot;taxRate&quot;:0.075,&quot;taxAmount&quot;:452.3935,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;3&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;SAN FRANCISCO&quot;,&quot;locality&quot;:&quot;SAN FRANCISCO&quot;}},{&quot;code&quot;:&quot;USA_FEDERAL_USF&quot;,&quot;name&quot;:&quot;Fed Universal Service Fund&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.252,&quot;taxAmount&quot;:1129.8825,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;0&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_FCC_REGULATORY_FEE_WIRELINE&quot;,&quot;name&quot;:&quot;FCC Regulatory Fee (Wireline)&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.00452,&quot;taxAmount&quot;:20.2662,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;0&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}}]}]}}&#x27;
+status_code:200
+status_code:200
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_calculateTaxWithAvalaraCTUSACA</td>
+          <td class="col-duration">5.89</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;invoiceString&quot;:&quot;CT-123123&quot;,&quot;invoiceItemTaxes&quot;:[{&quot;ref&quot;:&quot;APPLY_TO_AUDIO_LEGS_Avalara&quot;,&quot;taxes&quot;:[{&quot;code&quot;:&quot;USA_CA_PUC_FEE&quot;,&quot;name&quot;:&quot;CA PUC Fee&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.0052,&quot;taxAmount&quot;:23.3151,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CA_TRS&quot;,&quot;name&quot;:&quot;CA TRS&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.0111,&quot;taxAmount&quot;:49.7687,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CASF&quot;,&quot;name&quot;:&quot;CASF&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.01019,&quot;taxAmount&quot;:45.6885,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CA_HIGH_COST_FUND_A&quot;,&quot;name&quot;:&quot;CA High Cost Fund A&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.007,&quot;taxAmount&quot;:31.3857,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_CA_TELECONNECT_FUND&quot;,&quot;name&quot;:&quot;CA Teleconnect Fund&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.0078,&quot;taxAmount&quot;:34.9726,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;1&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_UTILITY_USERS_TAX&quot;,&quot;name&quot;:&quot;Utility Users Tax&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:6031.91317272,&quot;taxRate&quot;:0.075,&quot;taxAmount&quot;:452.3935,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;3&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;CA&quot;,&quot;county&quot;:&quot;SAN FRANCISCO&quot;,&quot;locality&quot;:&quot;SAN FRANCISCO&quot;}},{&quot;code&quot;:&quot;USA_FEDERAL_USF&quot;,&quot;name&quot;:&quot;Fed Universal Service Fund&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.252,&quot;taxAmount&quot;:1129.8825,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;0&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}},{&quot;code&quot;:&quot;USA_FCC_REGULATORY_FEE_WIRELINE&quot;,&quot;name&quot;:&quot;FCC Regulatory Fee (Wireline)&quot;,&quot;billable&quot;:true,&quot;applicableAmount&quot;:4483.6604,&quot;taxRate&quot;:0.00452,&quot;taxAmount&quot;:20.2662,&quot;exempted&quot;:0.0,&quot;level&quot;:&quot;0&quot;,&quot;jurisdiction&quot;:{&quot;countryIso&quot;:&quot;USA&quot;,&quot;region&quot;:&quot;&quot;,&quot;county&quot;:&quot;&quot;,&quot;locality&quot;:&quot;&quot;}}]}]}}&#x27;
+status_code:200
+status_code:200
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getEmptyListOfChargeTypesOfEvent</td>
+          <td class="col-duration">3.93</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;exceptionFlags&quot;:[],&quot;chargeTypes&quot;:[]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfBusinessAreas</td>
+          <td class="col-duration">3.61</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:[&quot;CT&quot;,&quot;Event&quot;,&quot;RemoteMeeting&quot;]}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfChargeTypesOfCT</td>
+          <td class="col-duration">3.47</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;exceptionFlags&quot;:[&quot;Freemium&quot;],&quot;chargeTypes&quot;:[&quot;AudioCall&quot;,&quot;CoreSubscription&quot;,&quot;PerfectBundle&quot;,&quot;SBCActivatedUserSubscription&quot;,&quot;USDynamicE911&quot;,&quot;USCNAM&quot;,&quot;UnactivatedDDIs&quot;,&quot;PortCostPerDDI&quot;,&quot;PortCostPerRequest&quot;,&quot;PortCostOther&quot;,&quot;NewNumberRequest&quot;,&quot;Recording&quot;,&quot;PS_InitialSetup&quot;,&quot;PS_CTOnboarding&quot;,&quot;PS_OnPremSBCOnboarding&quot;,&quot;PS_Bespoke&quot;,&quot;PS_CT_POC&quot;,&quot;Hardware&quot;,&quot;SBCVendorWaranty&quot;,&quot;AdvancePayments&quot;,&quot;Unknown&quot;]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfChargeTypesOfCTLowerCase</td>
+          <td class="col-duration">3.69</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfChargeTypesOfNonExistingBusinessAreas</td>
+          <td class="col-duration">3.31</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfChargeTypesOfRemoteMeeting</td>
+          <td class="col-duration">3.32</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;exceptionFlags&quot;:[&quot;Online&quot;],&quot;chargeTypes&quot;:[&quot;AudioLeg&quot;,&quot;Recording&quot;,&quot;PAYG_ScreenShare&quot;,&quot;PAYG_WebEx&quot;,&quot;PAYG_LiveMeeting&quot;,&quot;VideoLeg&quot;,&quot;MinimumUsage&quot;,&quot;OneTimeCharges&quot;,&quot;AncillaryChargesCancelationFee&quot;,&quot;AncillaryChargesNoShowFee&quot;,&quot;AncillaryChargesOverageFee&quot;,&quot;AncillaryChargesParticipantList&quot;,&quot;AncillaryChargesRecording&quot;,&quot;AncillaryChargesTranscription&quot;,&quot;AncillaryChargesTranslation&quot;,&quot;CustomizationFee&quot;,&quot;LicenseLiveMeeting&quot;,&quot;LicenseLoopUp&quot;,&quot;LicenseScreenShareOnly&quot;,&quot;LicenseWebEx&quot;,&quot;OperatorAssistedCallsPerMinuteRatedCdrs&quot;,&quot;OperatorAssistedCallsWebSharing&quot;,&quot;OtherMiscCharges&quot;,&quot;OverageFeesStorage&quot;,&quot;OverageFeesUsageParticipantCount&quot;,&quot;RevenueShareFee&quot;,&quot;Unknown&quot;,&quot;SBCVendorWaranty&quot;,&quot;AdvancePayments&quot;,&quot;SBCVendorWaranty&quot;,&quot;AdvancePayments&quot;]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInCTBusinessArea</td>
+          <td class="col-duration">4.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;taxCodes&quot;:[{&quot;taxCode&quot;:&quot;GBR_VAT&quot;,&quot;taxName&quot;:&quot;VAT&quot;},{&quot;taxCode&quot;:&quot;DEU_VAT&quot;,&quot;taxName&quot;:&quot;VAT&quot;},{&quot;taxCode&quot;:&quot;IND_IGST&quot;,&quot;taxName&quot;:&quot;IGST&quot;},{&quot;taxCode&quot;:&quot;IND_IGST_COMMUNICATIONS&quot;,&quot;taxName&quot;:&quot;IGST (Communications)&quot;},{&quot;taxCode&quot;:&quot;USA_FEDERAL_USF&quot;,&quot;taxName&quot;:&quot;Fed Universal Service Fund&quot;},{&quot;taxCode&quot;:&quot;USA_FCC_REGULATORY_FEE_WIRELINE&quot;,&quot;taxName&quot;:&quot;FCC Regulatory Fee (Wireline)&quot;},{&quot;taxCode&quot;:&quot;USA_SALES_TAX&quot;,&quot;taxName&quot;:&quot;Sales Tax&quot;},{&quot;taxCode&quot;:&quot;USA_TELECOMMUNICATIONS_SALES_TAX&quot;,&quot;taxName&quot;:&quot;Telecommunications Sales Tax&quot;},{&quot;taxCode&quot;:&quot;USA_TELECOM_RELAY_SURCHARGE&quot;,&quot;taxName&quot;:&quot;Telecom Relay Surcharge&quot;},{&quot;taxCode&quot;:&quot;USA_STATE_USF&quot;,&quot;taxName&quot;:&quot;State Universal Service Fund&quot;},{&quot;taxCode&quot;:&quot;USA_DISTRICT_TAX&quot;,&quot;taxName&quot;:&quot;District Tax&quot;},{&quot;taxCode&quot;:&quot;USA_CA_PUC_FEE&quot;,&quot;taxName&quot;:&quot;CA PUC Fee&quot;},{&quot;taxCode&quot;:&quot;USA_CA_TRS&quot;,&quot;taxName&quot;:&quot;CA TRS&quot;},{&quot;taxCode&quot;:&quot;USA_CASF&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;USA_CASF_VOIP&quot;,&quot;taxName&quot;:&quot;CASF (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_CA_HIGH_COST_FUND_A&quot;,&quot;taxName&quot;:&quot;CA High Cost Fund A&quot;},{&quot;taxCode&quot;:&quot;USA_CA_HIGH_COST_FUND_A_VOIP&quot;,&quot;taxName&quot;:&quot;CA High Cost Fund A (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_ULTS_CHARGE_VOIP&quot;,&quot;taxName&quot;:&quot;Universal Lifeline Telephone Service Charge (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_CA_TELECONNECT_FUND&quot;,&quot;taxName&quot;:&quot;CA Teleconnect Fund&quot;},{&quot;taxCode&quot;:&quot;USA_CA_TELECONNECT_FUND_VOIP&quot;,&quot;taxName&quot;:&quot;CA Teleconnect Fund (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_UTILITY_USERS_TAX&quot;,&quot;taxName&quot;:&quot;Utility Users Tax&quot;},{&quot;taxCode&quot;:&quot;USA_UTILITY_USERS_TAX_VOIP&quot;,&quot;taxName&quot;:&quot;Utility Users Tax (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_PUC_FEE_VOIP_NF&quot;,&quot;taxName&quot;:&quot;P.U.C. Fee (VOIP) NF&quot;},{&quot;taxCode&quot;:&quot;USA_TRS_VOIP&quot;,&quot;taxName&quot;:&quot;TRS (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_SALES_TAX_DATA_PROCESSING&quot;,&quot;taxName&quot;:&quot;Sales Tax (Data Processing)&quot;},{&quot;taxCode&quot;:&quot;USA_USF_VOIP&quot;,&quot;taxName&quot;:&quot;Universal Service Fund (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_STATUTORY_GROSS_RECEIPTS_BUSINESS&quot;,&quot;taxName&quot;:&quot;Statutory Gross Receipts (Business)&quot;},{&quot;taxCode&quot;:&quot;USA_NY_LOCAL_TRANSIT_TAX&quot;,&quot;taxName&quot;:&quot;NY Local Transit Tax&quot;},{&quot;taxCode&quot;:&quot;USA_NY_SALES_TAX&quot;,&quot;taxName&quot;:&quot;NY Sales Tax&quot;},{&quot;taxCode&quot;:&quot;USA_NY_MCTD_186C&quot;,&quot;taxName&quot;:&quot;NY MCTD 186C&quot;},{&quot;taxCode&quot;:&quot;USA_EXCISE_TAX&quot;,&quot;taxName&quot;:&quot;Excise Tax&quot;},{&quot;taxCode&quot;:&quot;USA_STATUTORY_GROSS_RECEIPTS&quot;,&quot;taxName&quot;:&quot;Statutory Gross Receipts&quot;},{&quot;taxCode&quot;:&quot;USA_TRANSIT_TAX&quot;,&quot;taxName&quot;:&quot;Transit Tax&quot;},{&quot;taxCode&quot;:&quot;USA_PUC_FEE&quot;,&quot;taxName&quot;:&quot;P.U.C. Fee&quot;},{&quot;taxCode&quot;:&quot;USA_HOSPITAL_DISTRICT_TAX&quot;,&quot;taxName&quot;:&quot;Hospital District Tax&quot;},{&quot;taxCode&quot;:&quot;ZAF_VAT&quot;,&quot;taxName&quot;:&quot;VAT&quot;}]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInFreemiumException</td>
+          <td class="col-duration">4.12</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;taxCodes&quot;:[{&quot;taxCode&quot;:&quot;GBR_VAT_Freemium_Exception&quot;,&quot;taxName&quot;:&quot;VATException_GBR_FREEMIUM&quot;},{&quot;taxCode&quot;:&quot;USA_SF1_ExceptionFreemium&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;USA_SF2_ExceptionFreemium&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;USA_SF3_ExceptionFreemium&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;CT_ONLY&quot;,&quot;taxName&quot;:&quot;ONLYFREEMIUMUSA&quot;}]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInRemoteMeetingBusinessArea</td>
+          <td class="col-duration">3.32</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Tax code does not exist&quot;}&#x27;
+status_code:404
+status_code:404
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInUSACountry</td>
+          <td class="col-duration">3.69</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;taxCodes&quot;:[{&quot;taxCode&quot;:&quot;GBR_VAT&quot;,&quot;taxName&quot;:&quot;VAT&quot;},{&quot;taxCode&quot;:&quot;USA_FEDERAL_USF&quot;,&quot;taxName&quot;:&quot;Fed Universal Service Fund&quot;},{&quot;taxCode&quot;:&quot;USA_FCC_REGULATORY_FEE_WIRELINE&quot;,&quot;taxName&quot;:&quot;FCC Regulatory Fee (Wireline)&quot;}]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInUSACountryWithCAState</td>
+          <td class="col-duration">4.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;taxCodes&quot;:[{&quot;taxCode&quot;:&quot;GBR_VAT&quot;,&quot;taxName&quot;:&quot;VAT&quot;},{&quot;taxCode&quot;:&quot;USA_FEDERAL_USF&quot;,&quot;taxName&quot;:&quot;Fed Universal Service Fund&quot;},{&quot;taxCode&quot;:&quot;USA_FCC_REGULATORY_FEE_WIRELINE&quot;,&quot;taxName&quot;:&quot;FCC Regulatory Fee (Wireline)&quot;},{&quot;taxCode&quot;:&quot;USA_DISTRICT_TAX&quot;,&quot;taxName&quot;:&quot;District Tax&quot;},{&quot;taxCode&quot;:&quot;USA_CA_PUC_FEE&quot;,&quot;taxName&quot;:&quot;CA PUC Fee&quot;},{&quot;taxCode&quot;:&quot;USA_CA_TRS&quot;,&quot;taxName&quot;:&quot;CA TRS&quot;},{&quot;taxCode&quot;:&quot;USA_CASF&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;USA_CASF_VOIP&quot;,&quot;taxName&quot;:&quot;CASF (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_CA_HIGH_COST_FUND_A&quot;,&quot;taxName&quot;:&quot;CA High Cost Fund A&quot;},{&quot;taxCode&quot;:&quot;USA_CA_HIGH_COST_FUND_A_VOIP&quot;,&quot;taxName&quot;:&quot;CA High Cost Fund A (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_ULTS_CHARGE_VOIP&quot;,&quot;taxName&quot;:&quot;Universal Lifeline Telephone Service Charge (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_CA_TELECONNECT_FUND&quot;,&quot;taxName&quot;:&quot;CA Teleconnect Fund&quot;},{&quot;taxCode&quot;:&quot;USA_CA_TELECONNECT_FUND_VOIP&quot;,&quot;taxName&quot;:&quot;CA Teleconnect Fund (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_UTILITY_USERS_TAX&quot;,&quot;taxName&quot;:&quot;Utility Users Tax&quot;},{&quot;taxCode&quot;:&quot;USA_UTILITY_USERS_TAX_VOIP&quot;,&quot;taxName&quot;:&quot;Utility Users Tax (VOIP)&quot;},{&quot;taxCode&quot;:&quot;USA_PUC_FEE_VOIP_NF&quot;,&quot;taxName&quot;:&quot;P.U.C. Fee (VOIP) NF&quot;},{&quot;taxCode&quot;:&quot;USA_TRS_VOIP&quot;,&quot;taxName&quot;:&quot;TRS (VOIP)&quot;}]}}&#x27;
+status_code:200
+status_code:200
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInUSACountryWithCAStateAndFreemiumException</td>
+          <td class="col-duration">3.20</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Tax code does not exist&quot;}&#x27;
+status_code:404
+status_code:404
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesInUSACountryWithFreemiumException</td>
+          <td class="col-duration">3.21</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:{&quot;taxCodes&quot;:[{&quot;taxCode&quot;:&quot;USA_SF1_ExceptionFreemium&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;USA_SF2_ExceptionFreemium&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;USA_SF3_ExceptionFreemium&quot;,&quot;taxName&quot;:&quot;CASF&quot;},{&quot;taxCode&quot;:&quot;CT_ONLY&quot;,&quot;taxName&quot;:&quot;ONLYFREEMIUMUSA&quot;}]}}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesWithInvalidBusinessArea</td>
+          <td class="col-duration">3.91</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Tax code does not exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesWithInvalidCountry</td>
+          <td class="col-duration">3.69</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Tax code does not exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesWithInvalidException</td>
+          <td class="col-duration">3.28</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Tax code does not exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getListOfTaxCodesWithInvalidState</td>
+          <td class="col-duration">3.84</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Tax code does not exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getSpecialLocationOfCTBusinessArea</td>
+          <td class="col-duration">3.96</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:[&quot;DEU&quot;,&quot;GBR&quot;,&quot;IND&quot;,&quot;USA&quot;,&quot;USA/AZ&quot;,&quot;USA/CA&quot;,&quot;USA/CT&quot;,&quot;USA/DC&quot;,&quot;USA/MA&quot;,&quot;USA/NY&quot;,&quot;USA/OH&quot;,&quot;USA/PA&quot;,&quot;USA/RI&quot;,&quot;USA/TX&quot;,&quot;ZAF&quot;]}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getSpecialLocationOfCTBusinessAreaWithFreemiumException</td>
+          <td class="col-duration">3.18</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:[&quot;GBR&quot;,&quot;USA&quot;]}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getSpecialLocationOfInvalidBusinessArea</td>
+          <td class="col-duration">3.24</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:[]}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_getSpecialLocationOfRemoteMeetingBusinessAreaWithLicenseException</td>
+          <td class="col-duration">3.99</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;data&quot;:[]}&#x27;
+status_code:200
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_validateAddressWithInvalidBusinessArea</td>
+          <td class="col-duration">4.17</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Business area doesn\&#x27;t exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_validateAddressWithInvalidCountry</td>
+          <td class="col-duration">3.49</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;validation failed&quot;,&quot;rules&quot;:[&quot;Please provide a valid country iso&quot;]}&#x27;
+status_code:400
+test_passed
+
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests/test_taxapiendpoint.py::TestTaxApiEndpoint::test_validateAddressWithInvalidExceptionFlag</td>
+          <td class="col-duration">3.36</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>b&#x27;{&quot;error&quot;:&quot;Exception flag doesn\&#x27;t exist&quot;}&#x27;
+status_code:404
+test_passed
+
+<br/></div></td></tr></tbody></table></body></html>

@@ -1,0 +1,65 @@
+[
+  {
+    "country": "USA",
+    "address1": "9839 Prince St.",
+    "city": "Watsonville",
+    "state": "CA",
+    "postalCode": "95076"
+  },
+  {
+    "country": "USA",
+    "address1": "1975 White Bridge Rd NW",
+    "city": "Oronoco",
+    "state": "MN",
+    "postalCode": "55960"
+  },
+  {
+    "country": "USA",
+    "address1": "4585 Shimerville Rd",
+    "city": "Clarence",
+    "state": "NY",
+    "postalCode": "14031"
+  },
+  {
+    "country": "USA",
+    "address1": "64 Bayberry Cmn",
+    "city": "Franklin",
+    "state": "MA",
+    "postalCode": "02038"
+  },
+  {
+    "country": "USA",
+    "address1": "8406 Old 22 Rte",
+    "city": "Alexandria",
+    "state": "PA",
+    "postalCode": "16611"
+  },
+  {
+    "country": "USA",
+    "address1": "4107 Fieldcrest Dr",
+    "city": "Killeen",
+    "state": "TX",
+    "postalCode": "76549"
+  },
+  {
+    "country": "USA",
+    "address1": "185 E Market St #551",
+    "city": "Warren",
+    "state": "OH",
+    "postalCode": "44481"
+  },
+  {
+    "country": "USA",
+    "address1": "71 Village Ct",
+    "city": "West Warwick",
+    "state": "RI",
+    "postalCode": "02893"
+  },
+  {
+    "country": "CAN",
+    "address1": "1506 Port Washington Road",
+    "city": "Picture Butte",
+    "state": "Alberta",
+    "postalCode": "T0K 1V0"
+  }
+]
