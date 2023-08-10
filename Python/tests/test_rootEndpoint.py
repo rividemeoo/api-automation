@@ -12,6 +12,7 @@ from rts.rest import R2RestClient
 import json
 import traceback
 import sys
+import pytest
 
 
 class TestRootEndpoint(unittest.TestCase):
@@ -27,10 +28,10 @@ class TestRootEndpoint(unittest.TestCase):
             print (response.content)
             print ('status_code:' + str(response.status_code))
 
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 300)
             print('test_passed')
         except AssertionError as e:
-            print ('An error occurred: {}'.format(e))
+            pytest.fail('An error occurred: {}'.format(e))
 
 
 if __name__ == "__main__":
