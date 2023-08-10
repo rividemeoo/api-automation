@@ -1,22 +1,27 @@
 pipeline {
-agent any
-stages {
-    stage('Checkout') {
+    agent any
+    stages {
+        stage('Checkout') {
             steps {
                 // Checkout the repository
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
                           userRemoteConfigs: [[url: 'https://github.com/rividemeoo/api-automation.git']]])
             }
         }
-    stage('build') {
-        steps {
-    sh 'pip install -r requirements.txt'
-              }     
-                }
-    stage ('Test'){
-        steps {
-            sh 'pytest'
+        
+        stage('Build') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
         }
-                }
+        
+        stage('Test') {
+            steps {
+                sh 'pytest'
+            }
         }
-        }
+        
+        // Add more stages as needed
+        
+    }
+}
