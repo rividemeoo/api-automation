@@ -17,13 +17,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                bat 'pytest'
-            }
-        }
-
-        stage('Deactivate Virtual Environment') {
-            steps {
-                bat 'deactivate'
+                bat 'python -m pytest'
             }
         }
         
