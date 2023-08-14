@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    
+    environment {
+        ENV_VARIABLE_NAME = 'PYTHON_ENVIRONMENT'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,10 +16,10 @@ pipeline {
 
         stage('Run PowerShell Script') {
             steps {
-                bat '''@echo off
-                $envVarValue = "%PYTHON_ENVIRONMENT%"
+                powershell '''
+                $envVarValue = $env:ENV_VARIABLE_NAME
                 $inputFile = "config.py"
-                $replacementValue = "$envVarValue.properties"
+                $replacementValue = "${envVarValue}.properties"
                 (Get-Content $inputFile) | ForEach-Object {
                     $_ -replace "test\\.properties", $replacementValue
                 } | Set-Content $inputFile
