@@ -28,7 +28,7 @@ class TestRootEndpoint(unittest.TestCase):
             print (response.content)
             print ('status_code:' + str(response.status_code))
 
-            self.assertEqual(response.status_code, 300)
+            self.assertEqual(response.status_code, 200)
             print('test_passed')
         except AssertionError as e:
             pytest.fail('An error occurred: {}'.format(e))
