@@ -49,8 +49,8 @@ pipeline {
             emailext subject: 'Build Failed: ${currentBuild.fullDisplayName}',
                      body: '''<p>Build Failed: ${currentBuild.fullDisplayName}</p>
                              <p>Check the console output for details.</p>''',
-                     recipientProviders: [developers()],
-                     replyTo: 'test_jenkins@loopup.co'
+                     to: 'test_jenkins_email@loopup.co',
+                     replyTo: 'noreply@loopup.co'
         }
     }
 }
