@@ -16,25 +16,27 @@ pipeline {
 
         stage('Run PowerShell Script') {
             steps {
-                def inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
+                script {  
+                    def inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
 
-                powershell '''
-                if ($envVarValue -eq $null) 
-                {
-                        $replacementValue = "${envVarValue}.properties"
-                } 
-                else 
-                {
-                        $replacementValue = "engr.properties"
+                    powershell '''
+                    if ($envVarValue -eq $null) 
+                    {
+                            $replacementValue = "${envVarValue}.properties"
+                    } 
+                    else 
+                    {
+                            $replacementValue = "engr.properties"
+                    }
+                    $workspacePath = env.WORKSPACE
+                    $envVarValue = $env:ENV_VARIABLE_NAME
+                    $replacementValue = "${envVarValue}.properties"
+                    (Get-Content $inputFile) | ForEach-Object {
+                        $_ -replace "test\\.properties", $replacementValue
+                    } | Set-Content $inputFile
+                    echo "Replacement complete."
+                    '''
                 }
-                $workspacePath = env.WORKSPACE
-                $envVarValue = $env:ENV_VARIABLE_NAME
-                $replacementValue = "${envVarValue}.properties"
-                (Get-Content $inputFile) | ForEach-Object {
-                    $_ -replace "test\\.properties", $replacementValue
-                } | Set-Content $inputFile
-                echo "Replacement complete."
-                '''
             }
         }
 
