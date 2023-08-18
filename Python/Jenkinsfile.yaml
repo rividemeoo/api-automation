@@ -26,7 +26,7 @@ pipeline {
                         $replacementValue = "engr.properties"
                 }
                 $envVarValue = $env:ENV_VARIABLE_NAME
-                $inputFile = "\\Python\\tests\\config.py"
+                $inputFile = "${workspacePath}\\Python\\tests\\config.py"
                 $replacementValue = "${envVarValue}.properties"
                 (Get-Content $inputFile) | ForEach-Object {
                     $_ -replace "test\\.properties", $replacementValue
@@ -54,11 +54,13 @@ pipeline {
 
     post {
         failure {
-            emailext subject: 'Build Failed: ${currentBuild.fullDisplayName}',
-                     body: '''<p>Build Failed: ${currentBuild.fullDisplayName}</p>
-                             <p>Check the console output for details.</p>''',
-                     to: 'test_jenkins_email@loopup.co',
-                     replyTo: 'noreply@loopup.co'
-        }
+            emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
+                    body: """
+                    <p>Build Failed: ${currentBuild.fullDisplayName}</p>
+                    <p>Check the console output for details.</p>
+                    """,
+                    to: 'test_jenkins_email@loopup.co',
+                    replyTo: 'noreply@loopup.co'
+                }
     }
 }
