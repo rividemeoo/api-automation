@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        ENV_VARIABLE_NAME = "env.PYTHON_ENVIRONMENT"
+        envVarValue = "env.PYTHON_ENVIRONMENT"
     }
 
     stages {
@@ -20,12 +20,13 @@ pipeline {
                     $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
-                    if ($ENV_VARIABLE_NAME -eq $null) {
-                        $replacementValue = "${envVarValue}.properties"
-                    }
-
                     (Get-Content $inputFile) | ForEach-Object {
-                        $_ -replace "test\\.properties", $replacementValue
+                        if ($envVarValue -ne $null){
+                        $_ -replace "test\.properties", $envVarValue.properties
+                        }
+                        else{
+                        $_ -replace "test\.properties", $replacementValue
+                        }
                     } | Set-Content $inputFile
 
                     echo "Replacement complete."
