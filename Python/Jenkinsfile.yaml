@@ -2,7 +2,8 @@ pipeline {
     agent any
     
     environment {
-        ENV_VARIABLE_NAME = "env.PYTHON_ENVIRONMENT"
+        ENV_VARIABLE_NAME = "env.PYTHON_ENVIRONMENT",
+        inputFile = "env.WORKSPACE\\Python\\tests\\config.py"
     }
 
     stages {
@@ -17,7 +18,6 @@ pipeline {
         stage('Run PowerShell Script') {
             steps { 
                     powershell '''
-                    $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
                     if ($ENV_VARIABLE_NAME -eq $null) {
