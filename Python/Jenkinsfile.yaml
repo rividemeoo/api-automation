@@ -17,7 +17,7 @@ pipeline {
         stage('Run PowerShell Script') {
             steps { 
                     powershell '''
-                    $inputFile = "${WORKSPACE}\\Python\\tests\\config.py"
+                    $inputFile = "C:\\Users\\TEMP.RING2-CORP.003\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\ApiAutomation\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
                     (Get-Content $inputFile) | ForEach-Object {
@@ -30,7 +30,7 @@ pipeline {
                     } | Set-Content $inputFile
 
                     echo "Replacement complete."
-                    echo ${WORKSPACE}
+                    echo "${WORKSPACE}"
                     '''
             }
         }
@@ -58,7 +58,7 @@ pipeline {
                     Build Failed: ${currentBuild.fullDisplayName}
                     Check the console output for details.
                     """,
-                    to: 'test_jenkins_email@loopup.co',
+                    to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
                     replyTo: 'noreply@loopup.co'
                 }
     }
