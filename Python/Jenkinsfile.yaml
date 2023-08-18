@@ -16,8 +16,10 @@ pipeline {
 
         stage('Run PowerShell Script') {
             steps { 
+                script {
+                    def jenkinsWorkspace = env.WORKSPACE.replace('\\', '\\\\')
                     powershell '''
-                    $inputFile = "C:\\Users\\TEMP.RING2-CORP.003\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\ApiAutomation\\Python\\tests\\config.py"
+                    \$jenkinsWorkspace = "${jenkinsWorkspace}"
                     $replacementValue = "engr.properties"
 
                     (Get-Content $inputFile) | ForEach-Object {
