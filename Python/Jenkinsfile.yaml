@@ -17,7 +17,7 @@ pipeline {
         stage('Run PowerShell Script') {
             steps { 
                     powershell '''
-                    $inputFile = "${env.JENKINS_HOME}\\Python\\tests\\config.py"
+                    $inputFile = "${WORKSPACE}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
                     (Get-Content $inputFile) | ForEach-Object {
@@ -30,7 +30,7 @@ pipeline {
                     } | Set-Content $inputFile
 
                     echo "Replacement complete."
-                    echo ${env.WORKSPACE}
+                    echo ${WORKSPACE}
                     '''
             }
         }
