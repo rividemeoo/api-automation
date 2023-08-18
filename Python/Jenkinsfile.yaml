@@ -25,6 +25,7 @@ pipeline {
                 {
                         $replacementValue = "engr.properties"
                 }
+                $workspacePath = env.WORKSPACE
                 $envVarValue = $env:ENV_VARIABLE_NAME
                 $inputFile = "${workspacePath}\\Python\\tests\\config.py"
                 $replacementValue = "${envVarValue}.properties"
