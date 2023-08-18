@@ -18,24 +18,23 @@ pipeline {
             steps {
                 script {  
                     def inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
+                    def envVarValue = env.ENV_VARIABLE_NAME ?: null  // Assigning the environment variable value
 
                     powershell '''
-                    if ($envVarValue -eq $null) 
-                    {
-                            $replacementValue = "${envVarValue}.properties"
-                    } 
-                    else 
-                    {
-                            $replacementValue = "engr.properties"
+                    $inputFile = "%s"
+                    $workspacePath = $env:WORKSPACE
+                    $replacementValue = "engr.properties"
+
+                    if ($envVarValue -ne $null) {
+                        $replacementValue = "${envVarValue}.properties"
                     }
-                    $workspacePath = env.WORKSPACE
-                    $envVarValue = $env:ENV_VARIABLE_NAME
-                    $replacementValue = "${envVarValue}.properties"
+
                     (Get-Content $inputFile) | ForEach-Object {
                         $_ -replace "test\\.properties", $replacementValue
                     } | Set-Content $inputFile
+
                     echo "Replacement complete."
-                    '''
+                    ''' , inputFile
                 }
             }
         }
@@ -60,8 +59,8 @@ pipeline {
         failure {
             emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
                     body: """
-                    <p>Build Failed: ${currentBuild.fullDisplayName}</p>
-                    <p>Check the console output for details.</p>
+                    Build Failed: ${currentBuild.fullDisplayName}
+                    Check the console output for details.
                     """,
                     to: 'test_jenkins_email@loopup.co',
                     replyTo: 'noreply@loopup.co'
