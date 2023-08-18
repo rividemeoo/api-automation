@@ -21,7 +21,6 @@ pipeline {
                     def envVarValue = env.ENV_VARIABLE_NAME ?: null  // Assigning the environment variable value
 
                     powershell '''
-                    $inputFile = "%s"
                     $workspacePath = $env:WORKSPACE
                     $replacementValue = "engr.properties"
 
@@ -34,7 +33,7 @@ pipeline {
                     } | Set-Content $inputFile
 
                     echo "Replacement complete."
-                    ''' , inputFile
+                    '''
                 }
             }
         }
@@ -57,13 +56,20 @@ pipeline {
 
     post {
         failure {
-            emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
-                    body: """
-                    Build Failed: ${currentBuild.fullDisplayName}
-                    Check the console output for details.
-                    """,
-                    to: 'test_jenkins_email@loopup.co',
-                    replyTo: 'noreply@loopup.co'
-                }
+            script {
+                def failedStages = currentBuild.rawBuild.getExecutor().getOwner().getStages().findAll { it.getResult().isWorseThan(hudson.model.Result.SUCCESS) }
+                def stageDetails = failedStages.collect { "Stage: ${it.getName()}, Status: ${it.getStatus()}" }.join('\n')
+
+                emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
+                        body: """
+                        Build Failed: ${currentBuild.fullDisplayName}
+                        Check the console output for details.
+
+                        Failed Stages:
+                        ${stageDetails}
+                        """,
+                        to: 'test_jenkins_email@loopup.co'
+            }
+        }
     }
 }
