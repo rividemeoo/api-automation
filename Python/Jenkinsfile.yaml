@@ -17,7 +17,7 @@ pipeline {
         stage('Run PowerShell Script') {
             steps {
                 powershell '''
-                if ($envVarValue == null) 
+                if ($envVarValue -eq $null) 
                 {
                         $replacementValue = "${envVarValue}.properties"
                 } 
