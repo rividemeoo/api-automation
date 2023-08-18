@@ -26,7 +26,7 @@ pipeline {
                         $replacementValue = "engr.properties"
                 }
                 $envVarValue = $env:ENV_VARIABLE_NAME
-                $inputFile = "config.py"
+                $inputFile = "\\Python\\tests\\config.py"
                 $replacementValue = "${envVarValue}.properties"
                 (Get-Content $inputFile) | ForEach-Object {
                     $_ -replace "test\\.properties", $replacementValue
