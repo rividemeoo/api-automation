@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        ENV_VARIABLE_NAME = ${env.PYTHON_ENVIRONMENT}
+        ENV_VARIABLE_NAME = "env.PYTHON_ENVIRONMENT"
     }
 
     stages {
