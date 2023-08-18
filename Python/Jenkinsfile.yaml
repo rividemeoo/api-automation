@@ -16,6 +16,8 @@ pipeline {
 
         stage('Run PowerShell Script') {
             steps {
+                def inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
+
                 powershell '''
                 if ($envVarValue -eq $null) 
                 {
@@ -27,7 +29,6 @@ pipeline {
                 }
                 $workspacePath = env.WORKSPACE
                 $envVarValue = $env:ENV_VARIABLE_NAME
-                $inputFile = "${workspacePath}\\Python\\tests\\config.py"
                 $replacementValue = "${envVarValue}.properties"
                 (Get-Content $inputFile) | ForEach-Object {
                     $_ -replace "test\\.properties", $replacementValue
