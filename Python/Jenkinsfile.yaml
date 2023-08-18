@@ -20,7 +20,7 @@ pipeline {
                     $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
-                    if ($ENV_VARIABLE_NAME -e $null) {
+                    if ($ENV_VARIABLE_NAME -eq $null) {
                         $replacementValue = "${envVarValue}.properties"
                     }
 
