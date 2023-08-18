@@ -17,6 +17,14 @@ pipeline {
         stage('Run PowerShell Script') {
             steps {
                 powershell '''
+                if ($envVarValue == null) 
+                {
+                        $replacementValue = "${envVarValue}.properties"
+                } 
+                else 
+                {
+                        $replacementValue = "engr.properties"
+                }
                 $envVarValue = $env:ENV_VARIABLE_NAME
                 $inputFile = "config.py"
                 $replacementValue = "${envVarValue}.properties"
