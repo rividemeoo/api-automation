@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         ENV_VARIABLE_NAME = 'PYTHON_ENVIRONMENT'
-        $envVarValue = env.ENV_VARIABLE_NAME ?: null  // Assigning the environment variable value
+        envVarValue = env.ENV_VARIABLE_NAME
     }
 
     stages {
