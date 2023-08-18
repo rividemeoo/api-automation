@@ -2,8 +2,7 @@ pipeline {
     agent any
     
     environment {
-        ENV_VARIABLE_NAME = 'PYTHON_ENVIRONMENT'
-        envVarValue = env.ENV_VARIABLE_NAME
+        ENV_VARIABLE_NAME = env.PYTHON_ENVIRONMENT
     }
 
     stages {
@@ -21,7 +20,7 @@ pipeline {
                     $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
-                    if ($envVarValue -ne $null) {
+                    if ($ENV_VARIABLE_NAME -e $null) {
                         $replacementValue = "${envVarValue}.properties"
                     }
 
