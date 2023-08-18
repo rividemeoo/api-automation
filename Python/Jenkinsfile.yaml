@@ -29,7 +29,7 @@ pipeline {
                     } | Set-Content $inputFile
 
                     echo "Replacement complete."
-                    echo env.WORKSPACE
+                    echo ${env.WORKSPACE}
                     '''
             }
         }
