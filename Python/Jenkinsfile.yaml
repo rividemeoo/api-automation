@@ -17,7 +17,7 @@ pipeline {
         stage('Run PowerShell Script') {
             steps { 
                     powershell '''
-                    inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
+                    $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
                     if ($ENV_VARIABLE_NAME -eq $null) {
