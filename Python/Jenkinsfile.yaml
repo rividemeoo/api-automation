@@ -4,7 +4,7 @@ pipeline {
     environment {
         envVarValue = "env.PYTHON_ENVIRONMENT"
     }
-
+    
     stages {
         stage('Checkout') {
             steps {
@@ -17,7 +17,7 @@ pipeline {
         stage('Run PowerShell Script') {
             steps { 
                     powershell '''
-                    $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
+                    $inputFile = "${env.JENKINS_HOME}\\Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
                     (Get-Content $inputFile) | ForEach-Object {
