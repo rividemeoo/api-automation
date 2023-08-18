@@ -3,6 +3,7 @@ pipeline {
     
     environment {
         ENV_VARIABLE_NAME = 'PYTHON_ENVIRONMENT'
+        $envVarValue = env.ENV_VARIABLE_NAME ?: null  // Assigning the environment variable value
     }
 
     stages {
@@ -18,7 +19,6 @@ pipeline {
             steps { 
                     powershell '''
                     $inputFile = "${env.WORKSPACE}\\Python\\tests\\config.py"
-                    $envVarValue = env.ENV_VARIABLE_NAME ?: null  // Assigning the environment variable value
                     $replacementValue = "engr.properties"
 
                     if ($envVarValue -ne $null) {
