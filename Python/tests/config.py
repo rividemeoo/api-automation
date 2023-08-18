@@ -7,7 +7,7 @@ from datetime import datetime
 
 RAND_NUMBER = random.uniform(0.1,9000.99999)
 
-environment = 'engr.properties'
+environment = 'test.properties'
 
 if environment == 'engr.properties':
     _default_auth_token = 'LxfIUMbcrJWXiwvz0kymfOyTTuIMWPgISmKzTX8njUKYnLxyE/aHzQ=='
