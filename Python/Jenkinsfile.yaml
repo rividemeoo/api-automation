@@ -21,14 +21,14 @@ pipeline {
                     $test = "${WORKSPACE}"
                     $replacementValue = "engr.properties"
 
-                    (Get-Content $inputFile) | ForEach-Object {
+                    (Get-Content $test) | ForEach-Object {
                         if ($envVarValue -ne $null){
                         $_ -replace "test\\.properties", $envVarValue.properties
                         }
                         else{
                         $_ -replace "test\\.properties", $replacementValue
                         }
-                    } | Set-Content $inputFile
+                    } | Set-Content $test
 
                     echo "Replacement complete."
                     echo "$test"
