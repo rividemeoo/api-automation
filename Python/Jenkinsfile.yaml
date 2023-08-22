@@ -3,7 +3,6 @@ pipeline {
     
     environment {
         envVarValue = "env.PYTHON_ENVIRONMENT"
-        test = "{$WORKSPACE}\\Python\\tests\\config.py"
     }
     
     stages {
@@ -18,10 +17,10 @@ pipeline {
         stage('Run PowerShell Script') {
             steps { 
                     powershell '''
-                    $inputFile = "C:\\Users\\TEMP.RING2-CORP.003\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\ApiAutomation\\Python\\tests\\config.py"
+                    $inputFile = "Python\\tests\\config.py"
                     $replacementValue = "engr.properties"
 
-                    (Get-Content $test) | ForEach-Object {
+                    (Get-Content $inputFile) | ForEach-Object {
                         if ($envVarValue -ne $null){
                         $_ -replace "test\\.properties", $envVarValue.properties
                         }
