@@ -52,14 +52,14 @@ pipeline {
 
     post {
         always {
-        def status = currentBuild.currentResultIsBetterOrEqualTo(hudson.model.Result.SUCCESS) ? "Succeeded" : "Failed"
-        emailext subject: "Build ${status}: ${currentBuild.fullDisplayName}",
-                body: """
-                Build ${status}: ${currentBuild.fullDisplayName}
-                Check the console output for details.
-                """,
-                to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
-                replyTo: 'noreply@loopup.co'
+            def status = currentBuild.currentResultIsBetterOrEqualTo(hudson.model.Result.SUCCESS) ? "Succeeded" : "Failed"
+            emailext subject: "Build ${status}: ${currentBuild.fullDisplayName}",
+                    body: """
+                    Build ${status}: ${currentBuild.fullDisplayName}
+                    Check the console output for details.
+                    """,
+                    to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
+                    replyTo: 'noreply@loopup.co'
             }
     }
 }
