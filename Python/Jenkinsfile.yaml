@@ -52,8 +52,7 @@ pipeline {
 
     post {
         always {
-            def status = currentBuild.currentResultIsBetterOrEqualTo(hudson.model.Result.SUCCESS) ? "Succeeded" : "Failed"
-            emailext subject: "Build ${status}: ${currentBuild.fullDisplayName}",
+            emailext subject: "Build ${currentBuild.currentResult}: ${currentBuild.fullDisplayName}",
                     body: """
                     Build ${status}: ${currentBuild.fullDisplayName}
                     Check the console output for details.
