@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         envVarValue = "env.PYTHON_ENVIRONMENT"
-        test = "{$WORKSPACE}"
+        test = "{$WORKSPACE}\\Python\\tests\\config.py"
     }
     
     stages {
@@ -30,8 +30,7 @@ pipeline {
                         }
                     } | Set-Content test
 
-                    echo "Replacement complete."
-                    echo test
+                    echo "Config replacement complete."
                     '''
             }
         }
