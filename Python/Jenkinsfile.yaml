@@ -3,6 +3,7 @@ pipeline {
     
     environment {
         envVarValue = "env.PYTHON_ENVIRONMENT"
+        test = "{$WORKSPACE}"
     }
     
     stages {
@@ -18,20 +19,19 @@ pipeline {
             steps { 
                     powershell '''
                     $inputFile = "C:\\Users\\TEMP.RING2-CORP.003\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\ApiAutomation\\Python\\tests\\config.py"
-                    $test = "${env.WORKSPACE}"
                     $replacementValue = "engr.properties"
 
-                    (Get-Content $test) | ForEach-Object {
+                    (Get-Content test) | ForEach-Object {
                         if ($envVarValue -ne $null){
                         $_ -replace "test\\.properties", $envVarValue.properties
                         }
                         else{
                         $_ -replace "test\\.properties", $replacementValue
                         }
-                    } | Set-Content $test
+                    } | Set-Content test
 
                     echo "Replacement complete."
-                    echo "$test"
+                    echo test
                     '''
             }
         }
