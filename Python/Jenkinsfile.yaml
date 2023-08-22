@@ -27,7 +27,7 @@ pipeline {
                         else{
                         $_ -replace "test\\.properties", $replacementValue
                         }
-                    } | Set-Content $test
+                    } | Set-Content $inputFile
 
                     echo "Config replacement complete."
                     '''
