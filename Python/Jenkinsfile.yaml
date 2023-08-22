@@ -54,7 +54,6 @@ pipeline {
         always {
             emailext subject: "Build ${currentBuild.currentResult}: ${currentBuild.fullDisplayName}",
                     body: """
-                    Build ${status}: ${currentBuild.fullDisplayName}
                     Check the console output for details.
                     """,
                     to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
