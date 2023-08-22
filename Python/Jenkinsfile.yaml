@@ -18,7 +18,7 @@ pipeline {
             steps { 
                     powershell '''
                     $inputFile = "C:\\Users\\TEMP.RING2-CORP.003\\AppData\\Local\\Jenkins\\.jenkins\\workspace\\ApiAutomation\\Python\\tests\\config.py"
-                    $test = "${WORKSPACE}"
+                    $test = "${env.WORKSPACE}"
                     $replacementValue = "engr.properties"
 
                     (Get-Content $test) | ForEach-Object {
