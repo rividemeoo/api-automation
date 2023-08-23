@@ -30,7 +30,7 @@ pipeline {
                     } | Set-Content $inputFile
 
                     echo "Config replacement complete."
-                    echo ${envVarValue}
+                    echo "${envVarValue}"
                     '''
             }
         }
