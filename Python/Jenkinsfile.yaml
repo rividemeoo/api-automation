@@ -52,7 +52,7 @@ pipeline {
     }
 
     post {
-        always {
+        failure {
             emailext subject: "Build status: ${currentBuild.fullDisplayName}",
                     body: """
                     Build status: ${currentBuild.fullDisplayName}
