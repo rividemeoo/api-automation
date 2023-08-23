@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         envVarValue = "env.PYTHON_ENVIRONMENT"
-        EMAIL_TO = 'test_someone@loopup.co'
+        recipientEmails = "naivetechblog@gmail.com, xyz@gmail.com"
     }
     
     stages {
@@ -48,15 +48,12 @@ pipeline {
             }
         }
     }        
-    post {
-    failure {
-        emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
-                body: """
-                Build Failed: ${currentBuild.fullDisplayName}
-                Check the console output for details.
-                """,
-                to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
-                replyTo: 'noreply@loopup.co'
+    post{
+        always{
+            emailext to: "${recipientEmails}",
+            subject: "Test Email",
+            body: "Test",
+            attachLog: true
+        }
     }
-}
 }
