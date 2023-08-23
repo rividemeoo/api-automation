@@ -54,9 +54,13 @@ pipeline {
 
     post {
         failure {
-            mail to: 'team@loopup.co',
-                subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-                body: "Something is wrong with ${env.BUILD_URL}"
-        }
+            emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
+                    body: """
+                    Build Failed: ${currentBuild.fullDisplayName}
+                    Check the console output for details.
+                    """,
+                    to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
+                    replyTo: 'noreply@loopup.co'
+                }
     }
 }
