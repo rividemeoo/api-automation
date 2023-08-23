@@ -53,9 +53,9 @@ pipeline {
 
     post {
         failure {
-            emailext subject: "Build status: ${currentBuild.fullDisplayName}",
+            emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
                     body: """
-                    Build status: ${currentBuild.fullDisplayName}
+                    Build Failed: ${currentBuild.fullDisplayName}
                     Check the console output for details.
                     """,
                     to: 'test_jenkins_email@loopup.co',
