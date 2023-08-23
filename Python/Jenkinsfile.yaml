@@ -52,13 +52,13 @@ pipeline {
     }
 
     post {
-        success {
-            emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
+        always {
+            emailext subject: "Build status: ${currentBuild.fullDisplayName}",
                     body: """
-                    Build Failed: ${currentBuild.fullDisplayName}
+                    Build status: ${currentBuild.fullDisplayName}
                     Check the console output for details.
                     """,
-                    to: 'test_jenkins_email@loopup.co, rividemeo@erraipasifik.com',
+                    to: 'test_jenkins_email@loopup.co',
                     replyTo: 'noreply@loopup.co'
                 }
     }
