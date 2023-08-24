@@ -56,15 +56,8 @@ pipeline {
             body: "Test",
             attachLog: true
         }
-        failure {
-            script {
-                slackSend(
-                    botUser: true,
-                    username : "Rivi Demeo", 
-                    message: "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", 
-                    tokenCredentialId: 'https://hooks.slack.com/services/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'
-                    )
-            }
+        always{
+            slackSend(token: "https://hooks.slack.com/services/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", color: "good", message: "Test Email")
         }
     }
 }
