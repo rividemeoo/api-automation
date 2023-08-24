@@ -50,13 +50,13 @@ pipeline {
     }
          
     post{
-        always {
+        success {
             emailext to: "${recipientEmails}",
             subject: "Test Email",
             body: "Test",
             attachLog: true
         }
-        always{
+        failure{
             slackSend(token: "https://hooks.slack.com/services/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", color: "good", message: "Test Email")
         }
     }
