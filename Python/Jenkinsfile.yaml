@@ -34,7 +34,7 @@ pipeline {
                     def status = bat(
                         script: 'docker container inspect -f .State.Status test_doc_container',
                         returnStatus: true
-                    ).trim()
+                    )
                     
                     if (status == 'running') {
                         echo "Container is running."
