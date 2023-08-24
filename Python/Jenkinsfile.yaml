@@ -3,6 +3,8 @@ pipeline {
     
     environment {
         recipientEmails = "test_jenkins@loopup.co"
+        dockerContainer = "test_doc_container"
+        dockerImage = "test_doc_image"
     }
     
     stages {
@@ -14,19 +16,25 @@ pipeline {
             }
         }
 
-        stage('Python Requirements Installation') {
+        stage('Build Docker Image') {
             steps {
                 echo 'Running the python requirements..'
                 bat 'docker build --pull --rm -f "Python\\Dockerfile" -t test_apiautomation "Python"'
             }
         }
         
-        // stage('Running the integration test') {
-        //     steps {
-        //         echo 'Running the integration test..'
-        //         bat 'python -m pytest'
-        //     }
-        // }
+        stage('Running Docker Image') {
+            steps {
+                bat 'docker run -d --name ${dockerContainer} -p 8080:80 ${dockerImage}'
+            }
+        }
+
+        stage('Delete Docker Container and Image') {
+            steps {
+                bat 'docker rm -f ${dockerContainer}'
+                bat 'docker rmi -f ${dockerImage}'
+            }
+        }
     }
          
     post {
