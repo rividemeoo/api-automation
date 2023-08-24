@@ -56,7 +56,7 @@ pipeline {
                     Build Failed: ${currentBuild.fullDisplayName}
                     Check the console output for details.
                     """,
-                    to: ${recipientEmails},
+                    to: "${recipientEmails}",
                     replyTo: 'noreply@loopup.co',
                     attachLog: true
                 }
