@@ -7,3 +7,5 @@ redis
 random-address
 
 Faker
+
+pyodbc
