@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     environment {
-        envVarValue = "env.PYTHON_ENVIRONMENT"
         recipientEmails = "test_jenkins@loopup.co"
     }
     
@@ -15,35 +14,16 @@ pipeline {
             }
         }
 
-        stage('Run PowerShell Script') {
-            steps { 
-                    powershell '''
-                    $inputFile = "Python\\tests\\config.py"
-                    $replacementValue = "engr.properties"
-
-                    (Get-Content $inputFile) | ForEach-Object {
-                        if ($envVarValue -ne $null){
-                        $_ -replace "test\\.properties", $envVarValue.properties
-                        }
-                        else{
-                        $_ -replace "test\\.properties", $replacementValue
-                        }
-                    } | Set-Content $inputFile
-
-                    echo "Config replacement complete."
-                    echo "${envVarValue}"
-                    '''
-            }
-        }
-
-        stage('Build') {
+        stage('Python Requirements Installation') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
+                echo 'Running the python requirements..'
+                bat 'python -m pip install -r \\Python\\requirements.txt'
             }
         }
         
-        stage('Test') {
+        stage('Running the integration test') {
             steps {
+                echo 'Running the integration test..'
                 bat 'python -m pytest'
             }
         }
