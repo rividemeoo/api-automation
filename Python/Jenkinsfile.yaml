@@ -25,7 +25,7 @@ pipeline {
         
         stage('Running Docker Image') {
             steps {
-                bat 'docker run -d --name ${dockerContainer} -p 8080:80 ${dockerImage}'
+                bat 'docker run -d --name ${dockerContainer} -p 8080:80 -e PYTHON_ENVIRONMENT=engr ${dockerImage}'
             }
         }
 
