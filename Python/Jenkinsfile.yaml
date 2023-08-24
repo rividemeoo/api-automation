@@ -19,13 +19,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Running the python requirements..'
-                bat 'docker build --pull --rm -f "Python\\Dockerfile" -t test_apiautomation "Python"'
+                bat "docker build --pull --rm -f "Python\\Dockerfile" -t ${dockerImage} "Python""
             }
         }
         
         stage('Running Docker Image') {
             steps {
-                bat 'docker run -d --name ${dockerContainer} -p 8080:80 -e PYTHON_ENVIRONMENT=engr ${dockerImage}'
+                bat "docker run -d --name ${dockerContainer} -p 8080:80 -e PYTHON_ENVIRONMENT=engr ${dockerImage}"
             }
         }
 
