@@ -23,7 +23,7 @@ pipeline {
         
         stage('Running Docker Image') {
             steps {
-                bat 'docker run -d --name test_doc_container -p 8080:80 -e PYTHON_ENVIRONMENT=engr test_doc_image'
+                bat 'docker run -d --name test_doc_container -e PYTHON_ENVIRONMENT=engr test_doc_image'
             }
         }
 
