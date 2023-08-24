@@ -37,18 +37,25 @@ pipeline {
                     )
                     
                     if (status == 'running') {
-                        echo "Container is running."
-                        break
+                    echo "Container is running."
+                    } 
+                    else {
+                        error "Container is no longer running."
                     }
                     
                     def elapsedTime = (currentBuild.startTimeInMillis - startTime) / 1000
                     
-                    if (elapsedTime >= timeout) {
-                        error "Timed out waiting for the container to start."
+                    if (status == 'running') {
+                        if (elapsedTime >= timeout) {
+                            error "Timed out waiting for the container to start."
+                        }
+                    } 
+                    else {
+                        break  // Exit the loop if the container is not running anymore
                     }
                     
                     sleep 10  // Wait for a short interval before checking again
-                    }
+                }
                 }
             }
         }
