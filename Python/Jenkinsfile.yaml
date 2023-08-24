@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        Python\\dockerfile true
+        dockerfile true
     }
     
     environment {
