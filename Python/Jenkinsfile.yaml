@@ -21,9 +21,35 @@ pipeline {
             }
         }
         
-        stage('Running Docker Image') {
+        stage('Running Docker Image and Container') {
             steps {
-                bat 'docker run -d --name test_doc_container test_doc_image'
+                bat 'docker run -d --name test_doc_container -e PYTHON_ENVIRONMENT=engr test_doc_image'
+
+                // Wait for the container to be in a running state
+            script {
+                def timeout = 120  // Maximum time to wait in seconds
+                def startTime = currentBuild.startTimeInMillis
+                
+                while (true) {
+                    def status = bat(
+                        script: 'docker inspect -f "{{.State.Status}}" %dockerContainer%',
+                        returnStatus: true
+                    ).trim()
+                    
+                    if (status == 'running') {
+                        echo "Container is running."
+                        break
+                    }
+                    
+                    def elapsedTime = (currentBuild.startTimeInMillis - startTime) / 1000
+                    
+                    if (elapsedTime >= timeout) {
+                        error "Timed out waiting for the container to start."
+                    }
+                    
+                    sleep 10  // Wait for a short interval before checking again
+                    }
+                }
             }
         }
 
