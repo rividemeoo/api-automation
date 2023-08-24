@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Running the python requirements..'
-                bat "docker build --pull --rm -f "Python\\Dockerfile" -t ${dockerImage} "Python""
+                bat "docker build --pull --rm -f "Python\Dockerfile" -t ${dockerImage} "Python""
             }
         }
         
