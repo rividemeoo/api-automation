@@ -32,7 +32,7 @@ pipeline {
                 
                 while (true) {
                     def status = bat(
-                        script: 'docker inspect -f "{{.State.Status}}" %dockerContainer%',
+                        script: 'docker inspect -format State.Status %test_doc_container%',
                         returnStatus: true
                     ).trim()
                     
