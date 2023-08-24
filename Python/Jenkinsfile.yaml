@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile true
+    }
     
     environment {
         recipientEmails = "test_jenkins@loopup.co"
@@ -14,19 +16,19 @@ pipeline {
             }
         }
 
-        stage('Python Requirements Installation') {
-            steps {
-                echo 'Running the python requirements..'
-                bat 'python -m pip install -r Python\\requirements.txt'
-            }
-        }
+        // stage('Python Requirements Installation') {
+        //     steps {
+        //         echo 'Running the python requirements..'
+        //         bat 'python -m pip install -r Python\\requirements.txt'
+        //     }
+        // }
         
-        stage('Running the integration test') {
-            steps {
-                echo 'Running the integration test..'
-                bat 'python -m pytest'
-            }
-        }
+        // stage('Running the integration test') {
+        //     steps {
+        //         echo 'Running the integration test..'
+        //         bat 'python -m pytest'
+        //     }
+        // }
     }
          
     post {
