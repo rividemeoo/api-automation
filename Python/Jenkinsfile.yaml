@@ -27,10 +27,12 @@ pipeline {
                 powershell '''
                     $timeout = 120
                     $startTime = Get-Date
+                    $loopCounter = 0
 
                     while ($true) {
+                        $loopCounter++
                         $status = docker inspect -f "{{.State.Status}}" test_doc_container
-                        Write-Host "Container status: $status"
+                        Write-Host "Loop $loopCounter - Container status: $status"
                         
                         if ($status -eq "running") {
                             Write-Host "Container is running."
@@ -51,12 +53,12 @@ pipeline {
             }
         }
 
-        // stage('Delete Docker Container and Image') {
-        //     steps {
-        //         bat 'docker rm -f test_doc_container'
-        //         bat 'docker rmi -f test_doc_image'
-        //     }
-        // }
+        stage('Delete Docker Container and Image') {
+            steps {
+                bat 'docker rm -f test_doc_container'
+                bat 'docker rmi -f test_doc_image'
+            }
+        }
     }
          
     post {
