@@ -32,7 +32,7 @@ pipeline {
                     while ($true) {
                         $loopCounter++
                         $status = docker inspect -f "{{.State.Status}}" test_doc_container
-                        Write-Host "Loop $loopCounter - Container status: $status"
+                        Write-Host "Retry check number $loopCounter - Container status: $status"
                         
                         if ($status -eq "running") {
                             Write-Host "Container is running."
