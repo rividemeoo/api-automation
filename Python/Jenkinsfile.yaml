@@ -24,41 +24,29 @@ pipeline {
         stage('Running Docker Image and Container') {
             steps {
                 bat 'docker run -d --name test_doc_container -e PYTHON_ENVIRONMENT=engr test_doc_image'
-                bat '''
-                    @echo off
-                    setlocal
+                powershell '''
+                    $timeout = 120
+                    $startTime = Get-Date
 
-                    set timeout=120
-                    set startTime=%time: =0%
-                    set dockerContainer=test_doc_container
-
-                    :loop
-                    for /f %%A in ('docker inspect -f "{{.State.Status}}" %dockerContainer%') do set status=%%A
-                    echo Container status: %status%
-                    if "%status%"=="running" (
-                        echo Container is running.
-                    ) else (
-                        echo Container is no longer running.
-                        goto :break
-                    )
-
-                    setlocal enabledelayedexpansion
-                    for /f %%A in ("%startTime%") do set "startTime=%%A"
-                    setlocal disabledelayedexpansion
-
-                    for /f %%A in ('powershell -command "[math]::Round((New-TimeSpan -Start '%startTime%' -End %time% ).TotalSeconds)"') do set elapsedTime=%%A
-
-                    if %elapsedTime% geq %timeout% (
-                        echo Timed out waiting for the container to start.
-                        exit /b 1
-                    )
-
-                    ping 127.0.0.1 -n 6 >nul
-                    goto :loop
-
-                    :break
-                    endlocal
-                    endlocal
+                    while ($true) {
+                        $status = docker inspect -f "{{.State.Status}}" test_doc_container
+                        Write-Host "Container status: $status"
+                        
+                        if ($status -eq "running") {
+                            Write-Host "Container is running."
+                        } else {
+                            Write-Host "Container is no longer running."
+                            break
+                        }
+                        
+                        $elapsedTime = (Get-Date) - $startTime
+                        if ($elapsedTime.TotalSeconds -ge $timeout) {
+                            Write-Host "Timed out waiting for the container to start."
+                            exit 1
+                        }
+                        
+                        Start-Sleep -Seconds 5
+                    }
                 '''
             }
         }
