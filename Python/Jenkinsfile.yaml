@@ -46,7 +46,7 @@ pipeline {
                         
                         def elapsedTime = (currentBuild.startTimeInMillis - startTime) / 1000
                         
-                        if (elapsedTime,>= timeout) {
+                        if (elapsedTime>= timeout) {
                             error "Timed out waiting for the container to start."
                         }
                         
