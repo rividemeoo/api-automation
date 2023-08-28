@@ -25,7 +25,7 @@ pipeline {
             steps {
                 bat 'docker run -d --name test_doc_container -e PYTHON_ENVIRONMENT=engr test_doc_image'
 
-                Wait for the container to be in a running state
+                // Wait for the container to be in a running state
             script {
                 def timeout = 120  // Maximum time to wait in seconds
                 def startTime = currentBuild.startTimeInMillis
