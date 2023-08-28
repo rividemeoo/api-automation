@@ -35,7 +35,7 @@ pipeline {
                         script: 'docker inspect -f \"{{.State.Status}}\" test_doc_container',
                         returnStatus: true
                     )
-                    
+                    echo status
                     if (status == 'running') {
                     echo "Container is running."
                         } else {
