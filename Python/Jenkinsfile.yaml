@@ -33,18 +33,20 @@ pipeline {
                 while (true) {
                     def status = bat(
                         script: 'docker inspect -f \"{{.State.Status}}\" test_doc_container',
-                        returnStatus: true
+                        returnStatus: true,
+                        returnStdout: true
                     )
-                    if (${status} == 'running') {
+                    echo "Container status: ${status}" 
+                    if (status == 'running') {
                     echo "Container is running."
                         } else {
                             echo "Container is no longer running."
                             break  // Exit the loop if the container is not running anymore
                         }
                         
-                        def elapsedTime = (currentBuild.startTimeInMillis - ${startTime}) / 1000
+                        def elapsedTime = (currentBuild.startTimeInMillis - startTime) / 1000
                         
-                        if (${elapsedTime} >= ${timeout}) {
+                        if (elapsedTime,>= timeout) {
                             error "Timed out waiting for the container to start."
                         }
                         
