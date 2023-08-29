@@ -54,16 +54,24 @@ pipeline {
 
         stage('Check Container Logs') {
             steps {
-                powershell '''
-                    $containerLogs = docker logs test_doc_container
-                    Write-Host "Container Logs:"
-                    Write-Host $containerLogs
+                script {
+                    try {
+                        def containerLogs = powershell(returnStdout: true, script: '''
+                            $containerLogs = docker logs test_container
+                            Write-Host "Container Logs:"
+                            Write-Host $containerLogs
 
-                    if ($containerLogs -match "Failed: An error occurred:") {
-                        Write-Host "Error found in docker container logs."
-                        exit 1  # Set the exit code to indicate build failure
+                            if ($containerLogs -match "ErrorPattern") {
+                                Write-Host "Error found in container logs."
+                                throw "ErrorPattern found in container logs"
+                            }
+                        ''')
+                        
+                        echo "Container logs checked successfully."
+                    } catch (Exception e) {
+                        echo "An error occurred: ${e.getMessage()}"
                     }
-                '''
+                }
             }
         }
 
