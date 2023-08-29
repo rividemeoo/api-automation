@@ -55,7 +55,7 @@ pipeline {
         stage('Check Container Logs') {
             steps {
                 powershell '''
-                    $containerLogs = docker logs test_container
+                    $containerLogs = docker logs test_doc_container
                     Write-Host "Container Logs:"
                     Write-Host $containerLogs
 
