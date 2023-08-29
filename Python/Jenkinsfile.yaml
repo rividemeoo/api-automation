@@ -87,7 +87,7 @@ pipeline {
                 script {
                     try {
                         def containerLogs = powershell(returnStdout: true, script: '''
-                            $containerLogs = docker logs test_container
+                            $containerLogs = docker logs test_doc_container
                             Write-Host "Container Logs:"
                             Write-Host $containerLogs
 
