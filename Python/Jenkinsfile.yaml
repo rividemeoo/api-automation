@@ -104,13 +104,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Delete Docker Container and Image') {
-            steps {
-                bat 'docker rm -f test_doc_container'
-                bat 'docker rmi -f test_doc_image'
-            }
-        }
     }
          
     post {
