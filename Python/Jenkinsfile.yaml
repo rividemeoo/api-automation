@@ -95,10 +95,11 @@ pipeline {
                                 throw "AssertionError found in container logs"
                             }
                         ''')
+                        exit 1
                         
                         echo "Container logs checked successfully."
                     } catch (Exception e) {
-                        echo "An error occurred: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
                     }
                 }
             }
