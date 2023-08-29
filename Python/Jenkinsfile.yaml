@@ -32,12 +32,11 @@ pipeline {
                     while ($true) {
                         $loopCounter++
                         $status = docker inspect -f "{{.State.Status}}" test_doc_container
-                        Write-Host "Retry check number $loopCounter - Container status: $status"
-                        
+                              
                         if ($status -eq "running") {
-                            Write-Host "Container is running."
+                            Write-Host "Retry check number $loopCounter - Container status: $status"
                         } else {
-                            Write-Host "Container is no longer running."
+                            Write-Host "Retry check number $loopCounter - Container status: $status"
                             break
                         }
                         
@@ -48,6 +47,21 @@ pipeline {
                         }
                         
                         Start-Sleep -Seconds 5
+                    }
+                '''
+            }
+        }
+
+        stage('Check Container Logs') {
+            steps {
+                powershell '''
+                    $containerLogs = docker logs test_container
+                    Write-Host "Container Logs:"
+                    Write-Host $containerLogs
+
+                    if ($containerLogs -match "Failed: An error occurred:") {
+                        Write-Host "Error found in docker container logs."
+                        exit 1  # Set the exit code to indicate build failure
                     }
                 '''
             }
