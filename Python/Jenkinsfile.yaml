@@ -14,6 +14,36 @@ pipeline {
             }
         }
 
+        stage('Delete docker container and image if exist') {
+            steps {
+                script {
+                    try {
+                        $containerName = 'test_doc_container'
+                        $existingContainerId = docker ps -aqf "name=$containerName"
+
+                        if ($existingContainerId) {
+                            Write-Host "Container $containerName exists. Deleting..."
+                            docker rm -f $existingContainerId
+                        } else {
+                            Write-Host "Container $containerName does not exist."
+                        }
+                        
+                        $imageName = 'test_doc_image'
+                        $existingImageId = docker images -q $imageName
+
+                        if ($existingImageId) {
+                            Write-Host "Image $imageName exists. Deleting..."
+                            docker rmi -f $existingImageId
+                        } else {
+                            Write-Host "Image $imageName does not exist."
+                        }
+                    } catch {
+                        Write-Host "Failed to prepare: $_"
+                    }
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 echo 'Running the python requirements..'
