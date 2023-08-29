@@ -46,7 +46,6 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                echo 'Running the python requirements..'
                 bat 'docker build --pull --rm -f "Python\\Dockerfile" -t test_doc_image "Python"'
             }
         }
@@ -91,9 +90,9 @@ pipeline {
                             Write-Host "Container Logs:"
                             Write-Host $containerLogs
 
-                            if ($containerLogs -match "ErrorPattern") {
+                            if ($containerLogs -match "AssertionError") {
                                 Write-Host "Error found in container logs."
-                                throw "ErrorPattern found in container logs"
+                                throw "AssertionError found in container logs"
                             }
                         ''')
                         
