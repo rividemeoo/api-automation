@@ -107,18 +107,15 @@ pipeline {
 
         stage('Generate Report') {
             steps {
-                script {
-                    dir("source") {
-                        publishHTML (target: [
-                            allowMissing: false,
-                            alwaysLinkToLastBuild: true,
-                            keepAll: true,
-                            reportDir: "./htmlReports",
-                            reportFiles: 'dependency-check-report.html',
-                            reportName: "Application-Dependency-Check-Report"
-                        ])
-                    }
-                }
+                // Publish HTML reports
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: './htmlReports',
+                    reportFiles: 'index.html',
+                    reportName: 'HTML Report'
+                ])
             }
         }
     }
