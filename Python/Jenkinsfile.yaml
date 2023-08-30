@@ -105,7 +105,20 @@ pipeline {
             }
         }
     }
-         
+
+        stage('Generate Report') {
+            dir("source") {
+                publishHTML (target: [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target',
+                    reportFiles: 'dependency-check-report.html',
+                    reportName: "Application-Dependency-Check-Report"
+                    ])
+            }
+    }
+
     post {
         failure {
             emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
@@ -117,16 +130,5 @@ pipeline {
                     replyTo: 'noreply@loopup.co',
                     attachLog: true
                 }
-        always {
-            // Publish HTML reports
-            publishHTML(target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'reports',
-                reportFiles: 'index.html',
-                reportName: 'HTML Report'
-            ])
-        }
     }
 }
