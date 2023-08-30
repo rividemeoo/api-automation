@@ -107,15 +107,14 @@ pipeline {
 
     post {
         always {
-            emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
+            emailext subject: "Build ${currentBuild.result}: ${currentBuild.fullDisplayName}",
                 body: """
-                Build Failed: ${currentBuild.fullDisplayName}
-                
-                Build URL: ${env.BUILD_URL}
-                Build Status: ${currentBuild.result}
-                Job: ${env.JOB_NAME}
-                Workspace: ${env.WORKSPACE}
-                Executor: ${env.NODE_NAME}
+                Build ${currentBuild.result}: ${currentBuild.fullDisplayName}<br>
+                Build URL: ${env.BUILD_URL}<br>
+                Build Status: ${currentBuild.result}<br>
+                Job: ${env.JOB_NAME}<br>
+                Workspace: ${env.WORKSPACE}<br>
+                Executor: ${env.NODE_NAME}<br>
                 
                 Check the console output for details.
                 """,
