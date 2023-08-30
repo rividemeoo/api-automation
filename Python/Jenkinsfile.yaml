@@ -108,13 +108,20 @@ pipeline {
     post {
         always {
             emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
-                    body: """
-                    Build Failed: ${currentBuild.fullDisplayName}
-                    Check the console output for details.
-                    """,
-                    to: "${recipientEmails}",
-                    replyTo: 'noreply@loopup.co',
-                    attachLog: true
+                body: """
+                Build Failed: ${currentBuild.fullDisplayName}
+                
+                Build URL: ${env.BUILD_URL}
+                Build Status: ${currentBuild.result}
+                Job: ${env.JOB_NAME}
+                Workspace: ${env.WORKSPACE}
+                Executor: ${env.NODE_NAME}
+                
+                Check the console output for details.
+                """,
+                to: "${recipientEmails}",
+                replyTo: 'noreply@loopup.co',
+                attachLog: true
                 }
     }
 }
