@@ -110,10 +110,10 @@ pipeline {
                 script {
                     dir("source") {
                         publishHTML (target: [
-                            allowMissing: true,
+                            allowMissing: false,
                             alwaysLinkToLastBuild: true,
                             keepAll: true,
-                            reportDir: 'C:\\Users\\ring2_svc\\AppData\\Local\\Jenkins\\.jenkins\\jobs\\Tax Api Automation',
+                            reportDir: "./htmlReports",
                             reportFiles: 'dependency-check-report.html',
                             reportName: "Application-Dependency-Check-Report"
                         ])
