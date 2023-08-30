@@ -123,7 +123,7 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: '${env.WORKSPACE}/html/reports',
+                reportDir: 'reports',
                 reportFiles: 'index.html',
                 reportName: 'HTML Report'
             ])
