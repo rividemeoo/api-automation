@@ -104,24 +104,10 @@ pipeline {
                 }
             }
         }
-
-        stage('Generate Report') {
-            steps {
-                // Publish HTML reports
-                publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: './htmlReports',
-                    reportFiles: 'index.html',
-                    reportName: 'HTML Report'
-                ])
-            }
-        }
     }
 
     post {
-        failure {
+        always {
             emailext subject: "Build Failed: ${currentBuild.fullDisplayName}",
                     body: """
                     Build Failed: ${currentBuild.fullDisplayName}
