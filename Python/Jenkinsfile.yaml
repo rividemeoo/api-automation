@@ -106,18 +106,22 @@ pipeline {
         }
 
         stage('Generate Report') {
-            dir("source") {
-                publishHTML (target: [
-                    allowMissing: true,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'target',
-                    reportFiles: 'dependency-check-report.html',
-                    reportName: "Application-Dependency-Check-Report"
-                    ])
+            steps {
+                script {
+                    dir("source") {
+                        publishHTML (target: [
+                            allowMissing: true,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'target',
+                            reportFiles: 'dependency-check-report.html',
+                            reportName: "Application-Dependency-Check-Report"
+                        ])
+                    }
                 }
             }
         }
+    }
 
     post {
         failure {
