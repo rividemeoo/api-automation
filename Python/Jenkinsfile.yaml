@@ -104,7 +104,6 @@ pipeline {
                 }
             }
         }
-    }
 
         stage('Generate Report') {
             dir("source") {
@@ -116,8 +115,9 @@ pipeline {
                     reportFiles: 'dependency-check-report.html',
                     reportName: "Application-Dependency-Check-Report"
                     ])
+                }
             }
-    }
+        }
 
     post {
         failure {
