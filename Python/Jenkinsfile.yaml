@@ -117,5 +117,16 @@ pipeline {
                     replyTo: 'noreply@loopup.co',
                     attachLog: true
                 }
+        always {
+            // Publish HTML reports
+            publishHTML(target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: '${env.WORKSPACE}/html/reports',
+                reportFiles: 'index.html',
+                reportName: 'HTML Report'
+            ])
+        }
     }
 }
