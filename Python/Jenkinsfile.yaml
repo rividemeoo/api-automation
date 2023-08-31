@@ -1,5 +1,12 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            // Specify the Docker image that will be used for the agent
+            image 'your-docker-image:tag'
+            // Define any additional arguments or options for the Docker run command
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     
     environment {
         recipientEmails = "test_jenkins@loopup.co"
