@@ -15,6 +15,7 @@ pipeline {
 
                         if ($existingContainerId) {
                             Write-Host "Container $containerName exists. Deleting..."
+                            docker rm -f $existingContainerId
                             docker container prune
                         } else {
                             Write-Host "Container $containerName does not exist."
@@ -25,6 +26,7 @@ pipeline {
 
                         if ($existingImageId) {
                             Write-Host "Image $imageName exists. Deleting..."
+                            docker rmi -f $existingImageId
                             docker image prune
                         } else {
                             Write-Host "Image $imageName does not exist."
