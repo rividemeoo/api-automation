@@ -6,14 +6,6 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the repository
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], 
-                          userRemoteConfigs: [[url: 'https://github.com/rividemeoo/api-automation.git']]])
-            }
-        }
-
         stage('Delete docker container and image if exist') {
             steps {
                 powershell '''
