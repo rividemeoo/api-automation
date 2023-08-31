@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        test_docker {
+        docker {
             // Specify the Docker image that will be used for the agent
             image 'test_docker:tag'
             // Define any additional arguments or options for the Docker run command
